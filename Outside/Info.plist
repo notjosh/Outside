@@ -19,6 +19,6 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>NSPrincipalClass</key>
-	<string>$(PRODUCT_NAME).SsXFactory</string>
+	<string>$(PRODUCT_MODULE_NAME).OutsideView</string>
 </dict>
 </plist>

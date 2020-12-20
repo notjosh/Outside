@@ -13,8 +13,7 @@
 		4275E61F258FAEA50041705B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4275E61D258FAEA50041705B /* MainMenu.xib */; };
 		4275E629258FAEAF0041705B /* Outside.saver in Resources */ = {isa = PBXBuildFile; fileRef = 4275E5C7258FAA720041705B /* Outside.saver */; };
 		4275E62D258FAFD70041705B /* ConfigurationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4275E62C258FAFD70041705B /* ConfigurationController.swift */; };
-		4275E631258FB0950041705B /* ScreenSaverInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4275E630258FB0950041705B /* ScreenSaverInterface.swift */; };
-		4275E634258FB0EE0041705B /* ScreenSaverInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4275E630258FB0950041705B /* ScreenSaverInterface.swift */; };
+		42E5C034258FFF4E0089DD5C /* ScreenSaverInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 42E5C033258FFF4E0089DD5C /* ScreenSaverInterface.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +37,9 @@
 		4275E620258FAEA50041705B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4275E621258FAEA50041705B /* OutsideRunner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OutsideRunner.entitlements; sourceTree = "<group>"; };
 		4275E62C258FAFD70041705B /* ConfigurationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationController.swift; sourceTree = "<group>"; };
-		4275E630258FB0950041705B /* ScreenSaverInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSaverInterface.swift; sourceTree = "<group>"; };
+		42E5C031258FFF4E0089DD5C /* Outside-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Outside-Bridging-Header.h"; sourceTree = "<group>"; };
+		42E5C032258FFF4E0089DD5C /* OutsideRunner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OutsideRunner-Bridging-Header.h"; sourceTree = "<group>"; };
+		42E5C033258FFF4E0089DD5C /* ScreenSaverInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScreenSaverInterface.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,7 +84,8 @@
 				4275E5D6258FAAFC0041705B /* OutsideView.swift */,
 				4275E62C258FAFD70041705B /* ConfigurationController.swift */,
 				4275E5CE258FAA720041705B /* Info.plist */,
-				4275E630258FB0950041705B /* ScreenSaverInterface.swift */,
+				42E5C033258FFF4E0089DD5C /* ScreenSaverInterface.h */,
+				42E5C031258FFF4E0089DD5C /* Outside-Bridging-Header.h */,
 			);
 			path = Outside;
 			sourceTree = "<group>";
@@ -92,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				4275E619258FAEA40041705B /* AppDelegate.swift */,
+				42E5C032258FFF4E0089DD5C /* OutsideRunner-Bridging-Header.h */,
 				4275E61B258FAEA50041705B /* Assets.xcassets */,
 				4275E61D258FAEA50041705B /* MainMenu.xib */,
 				4275E620258FAEA50041705B /* Info.plist */,
@@ -107,6 +110,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42E5C034258FFF4E0089DD5C /* ScreenSaverInterface.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,10 +164,11 @@
 				TargetAttributes = {
 					4275E5C6258FAA720041705B = {
 						CreatedOnToolsVersion = 12.0;
-						LastSwiftMigration = 1200;
+						LastSwiftMigration = 1220;
 					};
 					4275E616258FAEA40041705B = {
 						CreatedOnToolsVersion = 12.0;
+						LastSwiftMigration = 1220;
 					};
 				};
 			};
@@ -212,7 +217,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4275E62D258FAFD70041705B /* ConfigurationController.swift in Sources */,
-				4275E631258FB0950041705B /* ScreenSaverInterface.swift in Sources */,
 				4275E5D7258FAAFC0041705B /* OutsideView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -222,7 +226,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4275E61A258FAEA40041705B /* AppDelegate.swift in Sources */,
-				4275E634258FB0EE0041705B /* ScreenSaverInterface.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,6 +378,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.notjosh.Outside;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Outside/Outside-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = saver;
@@ -397,6 +401,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.notjosh.Outside;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Outside/Outside-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = saver;
 			};
@@ -407,11 +412,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = OutsideRunner/OutsideRunner.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = FR4Z9GU3K2;
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDENED_RUNTIME = NO;
 				INFOPLIST_FILE = OutsideRunner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -420,6 +426,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.notjosh.OutsideRunner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "OutsideRunner/OutsideRunner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
@@ -430,11 +437,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = OutsideRunner/OutsideRunner.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = FR4Z9GU3K2;
-				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_HARDENED_RUNTIME = NO;
 				INFOPLIST_FILE = OutsideRunner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -443,6 +451,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.notjosh.OutsideRunner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = "OutsideRunner/OutsideRunner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
