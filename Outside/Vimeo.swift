@@ -53,6 +53,8 @@ enum VimeoError: Error {
 }
 
 class Vimeo {
+    var task: URLSessionDataTask?
+
     init() {
         // TODO: preferences, max size (1080p/4k/etc)
     }
@@ -65,7 +67,13 @@ class Vimeo {
         let url = URL(string: configURL)!
         let request = URLRequest(url: url)
 
-        URLSession.shared.perform(request, decode: VimeoConfiguration.self) { (result) in
+        if let task = task, task.state == .running {
+            print("cancelling")
+            task.cancel()
+            self.task = nil
+        }
+
+        task = URLSession.shared.perform(request, decode: VimeoConfiguration.self) { (result) in
             switch result {
             case .failure(let error):
                 return callback(.failure(error))

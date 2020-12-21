@@ -44,6 +44,7 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         wantsLayer = true
 
         playerLayer.autoresizingMask = [.layerWidthSizable, .layerHeightSizable]
+        playerLayer.drawsAsynchronously = true
         playerLayer.frame = bounds
         playerLayer.opacity = 1
         playerLayer.videoGravity = .resizeAspectFill
@@ -119,6 +120,9 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
                                        name: .AVPlayerItemFailedToPlayToEndTime,
                                        object: nil)
 
+        layer!.contentsScale = window?.backingScaleFactor ?? 1.0
+        playerLayer.contentsScale = window?.backingScaleFactor ?? 1.0
+
         next()
     }
 
@@ -144,8 +148,17 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
                     self.play(item: item, url: url)
                 }
             case .failure(let error):
+                let error = error as NSError
+
+                if error.code == -999 {
+                    // the request was cancelled, so ignore the error
+                    return
+                }
+                
                 print("error: \(error)")
-                self.next()
+                DispatchQueue.main.async {
+                    self.next()
+                }
             }
         }
     }
