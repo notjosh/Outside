@@ -14,8 +14,10 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
 
     let metadataContainer: NSView
     let metadataTextField: NSTextField
+    let progressIndicator: NSProgressIndicator
 
     var metadataVisibleTimer: Timer?
+    var metadata: (PlaybackItem, VimeoConfigurationVideo)?
 
     deinit {
         metadataVisibleTimer?.invalidate()
@@ -38,6 +40,7 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
 
         metadataContainer = NSView(frame: .zero)
         metadataTextField = NSTextField(labelWithString: "")
+        progressIndicator = NSProgressIndicator(frame: .zero)
 
         super.init(frame: frame, isPreview: preview)!
 
@@ -58,6 +61,7 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         player.isMuted = preferences.muteAudio
 
         addSubview(metadataContainer)
+        addSubview(progressIndicator)
         metadataContainer.addSubview(metadataTextField)
 
         metadataContainer.translatesAutoresizingMaskIntoConstraints = false
@@ -70,10 +74,22 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         metadataTextField.font = .systemFont(ofSize: isPreview ? 12 : 18, weight: .medium)
         metadataTextField.textColor = .white
 
+        progressIndicator.translatesAutoresizingMaskIntoConstraints = false
+        progressIndicator.isIndeterminate = true
+        if #available(OSX 11.0, *) {
+            progressIndicator.controlSize = .large
+        }
+        progressIndicator.appearance = NSAppearance(named: .vibrantLight)
+        progressIndicator.style = .spinning
+
         NSLayoutConstraint.activate([
+            progressIndicator.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
             metadataContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
+
             metadataContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            metadataContainer.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -20),
+            metadataContainer.trailingAnchor.constraint(lessThanOrEqualTo: progressIndicator.leadingAnchor, constant: -20),
+            progressIndicator.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+
         ])
 
         NSLayoutConstraint.activate([
@@ -108,6 +124,61 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         super.stopAnimation()
     }
 
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard
+            let keyPath = keyPath,
+            keyPath == "readyForDisplay"
+        else {
+            return
+        }
+
+        if playerLayer.isReadyForDisplay {
+            configureFadeInOut()
+            player.play()
+
+            hideLoading()
+        }
+
+        // buffering, show loading
+        if player.timeControlStatus == .playing {
+            if playerLayer.isReadyForDisplay {
+                hideLoading()
+            } else {
+                showLoading()
+            }
+        }
+    }
+
+    private func configureFadeInOut() {
+        guard let video = metadata?.1 else {
+            return
+        }
+
+        playerLayer.opacity = 0
+
+        let duration: Double = 0.5
+        let playbackDuration: Double = Double(max(0, video.duration - 1))
+
+        playerLayer.removeAnimation(forKey: "fade")
+
+        let fade = CAKeyframeAnimation(keyPath: "opacity")
+        fade.values = [0, 1, 1, 0] as [Int]
+        fade.keyTimes = [0, duration / playbackDuration, 1 - (duration / playbackDuration), 1] as [NSNumber]
+        fade.duration = playbackDuration
+        fade.calculationMode = .linear
+        fade.delegate = self
+        playerLayer.add(fade, forKey: "fade")
+
+        metadataVisibleTimer?.invalidate()
+        metadataVisibleTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { [weak self] timer in
+            NSAnimationContext.runAnimationGroup { context in
+                context.duration = 0.3
+                context.allowsImplicitAnimation = true
+                self?.metadataContainer.alphaValue = 0
+            }
+        }
+    }
+
     private func run() {
         let notificationCenter = NotificationCenter.default
 
@@ -123,6 +194,8 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         layer!.contentsScale = window?.backingScaleFactor ?? 1.0
         playerLayer.contentsScale = window?.backingScaleFactor ?? 1.0
 
+        playerLayer.addObserver(self, forKeyPath: "readyForDisplay", options: .new, context: nil)
+
         next()
     }
 
@@ -136,6 +209,12 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
 
         metadataTextField.stringValue = ""
         metadataContainer.isHidden = true
+        showLoading()
+
+        player.pause()
+        playerLayer.removeAllAnimations()
+        playerLayer.isHidden = true
+        playerLayer.opacity = 0
 
         vimeo.fetchPlaybackURL(of: item.vimeoId) { [weak self] result in
             guard let self = self else {
@@ -143,9 +222,10 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
             }
 
             switch result {
-            case .success(let url):
+            case .success(let metadata):
                 DispatchQueue.main.async {
-                    self.play(item: item, url: url)
+                    self.metadata = (item, metadata.1)
+                    self.play(item: item, url: metadata.0)
                 }
             case .failure(let error):
                 let error = error as NSError
@@ -190,18 +270,11 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         metadataContainer.isHidden = false
         metadataContainer.alphaValue = 1
 
-        metadataVisibleTimer?.invalidate()
-        metadataVisibleTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { [weak self] timer in
-            NSAnimationContext.runAnimationGroup { context in
-                context.duration = 0.3
-                context.allowsImplicitAnimation = true
-                self?.metadataContainer.alphaValue = 0
-            }
-        }
-
         player.replaceCurrentItem(with: playerItem)
         player.actionAtItemEnd = .none
         player.play()
+
+        playerLayer.isHidden = false
     }
 
     @objc
@@ -212,5 +285,28 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
     @objc
     func playerItemFailedToPlayToEndTime(_ notification: NSNotification) {
         next()
+    }
+
+    func showLoading() {
+        progressIndicator.startAnimation(self)
+        progressIndicator.isHidden = false
+    }
+
+    func hideLoading() {
+        progressIndicator.stopAnimation(self)
+        progressIndicator.isHidden = true
+    }
+}
+
+extension OutsideView: CAAnimationDelegate {
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        if flag == false {
+            return
+        }
+
+        // the video might have paused to buffer, so instead of waiting for it to complete, we should proceed
+        player.pause()
+        next()
+        print("animation ended, jumping to next", anim, flag)
     }
 }

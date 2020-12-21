@@ -59,7 +59,7 @@ class Vimeo {
         // TODO: preferences, max size (1080p/4k/etc)
     }
 
-    func fetchPlaybackURL(of id: String, callback: @escaping (Result<URL, Error>) -> Void) {
+    func fetchPlaybackURL(of id: String, callback: @escaping (Result<(URL, VimeoConfigurationVideo), Error>) -> Void) {
         let configURL = "https://player.vimeo.com/video/\(id)/config"
 
         print("fetching ID: \(id)")
@@ -88,7 +88,7 @@ class Vimeo {
                     return callback(.failure(VimeoError.noSuitableSizeFound))
                 }
 
-                return callback(.success(url))
+                return callback(.success((url, object.video)))
             }
         }
     }
