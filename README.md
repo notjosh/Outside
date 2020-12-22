@@ -15,4 +15,9 @@ It's soothing though, so that's neat.
 # TODO
 
 - [ ] OTA updates to `videos.json`
-- [ ] Add thumbnail to prefpane
+- [ ] option to deactivate when on battery/low battery
+- [ ] video caching
+- [ ] shortcut to skip to next video
+- [ ] handle "offline" use case
+- [ ] configure metadata corner
+- [ ] configure metadata timeout

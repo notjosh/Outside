@@ -2,7 +2,7 @@ default_platform(:mac)
 
 platform :mac do
   desc "Build the .saver, notarise, release"
-  lane :build do
+  lane :release do
     ensure_git_status_clean()
 
     version = get_version_number(
@@ -16,12 +16,7 @@ platform :mac do
 
     UI.user_error!("Version #{version} already released! Did you forget to bump the version number?") unless release == nil
 
-    # build .saver
-    build_mac_app(
-      scheme: "Outside",
-      configuration: "Release",
-      build_path: "build",
-    )
+    build
 
     xcarchive = Actions.lane_context[SharedValues::XCODEBUILD_ARCHIVE]
     package = Dir.chdir("..") do
@@ -65,6 +60,16 @@ platform :mac do
       tag_name: "v#{version}",
       description: "Release v#{version}",
       upload_assets: [package_zip, dsym_zip],
+    )
+  end
+
+  desc "Build the .saver"
+  lane :build do
+    # build .saver
+    build_mac_app(
+      scheme: "Outside",
+      configuration: "Release",
+      build_path: "build",
     )
   end
 end

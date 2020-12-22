@@ -16,11 +16,16 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## Mac
+### mac release
+```
+fastlane mac release
+```
+Build the .saver, notarise, release
 ### mac build
 ```
 fastlane mac build
 ```
-Build the .saver, notarise, release
+Build the .saver
 
 ----
 

@@ -22,6 +22,8 @@
 		4275E61F258FAEA50041705B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4275E61D258FAEA50041705B /* MainMenu.xib */; };
 		4275E629258FAEAF0041705B /* Outside.saver in Resources */ = {isa = PBXBuildFile; fileRef = 4275E5C7258FAA720041705B /* Outside.saver */; };
 		4275E62D258FAFD70041705B /* ConfigurationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4275E62C258FAFD70041705B /* ConfigurationController.swift */; };
+		42C1F1FC25923D8B003EE996 /* thumbnail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 42C1F1FA25923D8A003EE996 /* thumbnail@2x.png */; };
+		42C1F1FD25923D8B003EE996 /* thumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 42C1F1FB25923D8B003EE996 /* thumbnail.png */; };
 		42E5C034258FFF4E0089DD5C /* ScreenSaverInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 42E5C033258FFF4E0089DD5C /* ScreenSaverInterface.h */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +57,8 @@
 		4275E620258FAEA50041705B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4275E621258FAEA50041705B /* OutsideRunner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OutsideRunner.entitlements; sourceTree = "<group>"; };
 		4275E62C258FAFD70041705B /* ConfigurationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationController.swift; sourceTree = "<group>"; };
+		42C1F1FA25923D8A003EE996 /* thumbnail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail@2x.png"; sourceTree = "<group>"; };
+		42C1F1FB25923D8B003EE996 /* thumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbnail.png; sourceTree = "<group>"; };
 		42E5C031258FFF4E0089DD5C /* Outside-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Outside-Bridging-Header.h"; sourceTree = "<group>"; };
 		42E5C032258FFF4E0089DD5C /* OutsideRunner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OutsideRunner-Bridging-Header.h"; sourceTree = "<group>"; };
 		42E5C033258FFF4E0089DD5C /* ScreenSaverInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScreenSaverInterface.h; sourceTree = "<group>"; };
@@ -112,6 +116,8 @@
 				424857B0259010EF004681EE /* PlaylistItem.swift */,
 				424857AC25900ECB004681EE /* Bundle+Decodable.swift */,
 				424857B82590145F004681EE /* URLSession+Decodable.swift */,
+				42C1F1FB25923D8B003EE996 /* thumbnail.png */,
+				42C1F1FA25923D8A003EE996 /* thumbnail@2x.png */,
 			);
 			path = Outside;
 			sourceTree = "<group>";
@@ -223,8 +229,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42C1F1FD25923D8B003EE996 /* thumbnail.png in Resources */,
 				424857D125915DE1004681EE /* ConfigureSheet.xib in Resources */,
 				424857A925900E76004681EE /* videos.json in Resources */,
+				42C1F1FC25923D8B003EE996 /* thumbnail@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
