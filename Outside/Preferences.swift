@@ -3,19 +3,32 @@ import ScreenSaver
 import OSLog
 
 class Preferences {
+    static var shared: Preferences = {
+        return Preferences()
+    }()
+
     @Storage(key: "RandomisePlayback", defaultValue: true)
     var randomisePlayback: Bool
 
     @Storage(key: "MuteAudio", defaultValue: true)
     var muteAudio: Bool
 
-    @Storage(key: "HighestQuality", defaultValue: QualityPreference.q1080p)
-    var highestQuality: QualityPreference
+    @Storage(key: "HighestQuality", defaultValue: StreamingQuality.q1080p)
+    var highestQuality: StreamingQuality
 }
 
-enum QualityPreference: Int, Codable {
+enum StreamingQuality: Int, Codable, CaseIterable {
     case q4k = 2160
     case q1080p = 1080
+    case q480p = 480
+
+    var title: String {
+        switch self {
+        case .q480p: return "480p"
+        case .q1080p: return "1080p"
+        case .q4k: return "4k"
+        }
+    }
 }
 
 // via https://github.com/glouel/ScreenSaverMinimal/

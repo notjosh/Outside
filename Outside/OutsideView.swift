@@ -7,7 +7,7 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
 
     let playlist = Playlist()
     let vimeo = Vimeo()
-    let preferences = Preferences()
+    let preferences = Preferences.shared
 
     let player: AVPlayer
     let playerLayer: AVPlayerLayer
@@ -20,6 +20,8 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
     var metadata: (PlaybackItem, VimeoConfigurationVideo)?
 
     deinit {
+        playerLayer.removeObserver(self, forKeyPath: "readyForDisplay")
+
         metadataVisibleTimer?.invalidate()
         metadataVisibleTimer = nil
     }
@@ -216,7 +218,7 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         playerLayer.isHidden = true
         playerLayer.opacity = 0
 
-        vimeo.fetchPlaybackURL(of: item.vimeoId) { [weak self] result in
+        vimeo.fetchPlaybackURL(of: item.vimeoId, maximumHeight: preferences.highestQuality.rawValue) { [weak self] result in
             guard let self = self else {
                 return
             }

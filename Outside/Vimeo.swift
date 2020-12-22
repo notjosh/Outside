@@ -55,11 +55,7 @@ enum VimeoError: Error {
 class Vimeo {
     var task: URLSessionDataTask?
 
-    init() {
-        // TODO: preferences, max size (1080p/4k/etc)
-    }
-
-    func fetchPlaybackURL(of id: String, callback: @escaping (Result<(URL, VimeoConfigurationVideo), Error>) -> Void) {
+    func fetchPlaybackURL(of id: String, maximumHeight: Int = 1080, callback: @escaping (Result<(URL, VimeoConfigurationVideo), Error>) -> Void) {
         let configURL = "https://player.vimeo.com/video/\(id)/config"
 
         print("fetching ID: \(id)")
@@ -81,7 +77,7 @@ class Vimeo {
                 print("found: \(object.video.title) (\(object.video.durationHumanReadable))")
                 let candidates = object.request.files.progressive
                     .sorted(by: { $0.height > $1.height })
-                    .filter { $0.height <= 1080 }
+                    .filter { $0.height <= maximumHeight }
                     .map { $0.url }
 
                 guard let url = candidates.first else {

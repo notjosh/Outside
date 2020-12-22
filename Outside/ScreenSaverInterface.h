@@ -1,11 +1,4 @@
-//
-//  ScreenSaverInterface.h
-//  Outside
-//
-//  Created by Joshua May on 20/12/20.
-//
-
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,6 +10,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)startAnimation;
 - (void)stopAnimation;
+
+@property (readonly, strong) NSWindow * _Nullable configureSheet;
 
 @end
 

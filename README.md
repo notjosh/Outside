@@ -8,7 +8,5 @@ It's soothing though, so that's neat.
 
 # TODO
 
-- [ ] Preferences screen
 - [ ] OTA updates to `videos.json`
 - [ ] Automate deploys
-- [ ] Update checking

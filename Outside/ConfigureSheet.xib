@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17506"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="ConfigurationController" customModule="Outside" customModuleProvider="target">
+            <connections>
+                <outlet property="maximumQualityPopUpButton" destination="HRa-JF-3MI" id="y6G-NQ-pBX"/>
+                <outlet property="muteAudioCheckbox" destination="FHa-Qx-ZkE" id="0cb-Tm-Rk5"/>
+                <outlet property="randomiseOrderCheckbox" destination="oHk-rm-ZMe" id="PbU-2B-DyT"/>
+                <outlet property="window" destination="QvC-M9-y7g" id="trX-zM-h0D"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Outside" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="240" width="328" height="146"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1050"/>
+            <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
+                <rect key="frame" x="0.0" y="0.0" width="328" height="150"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <gridView xPlacement="leading" yPlacement="bottom" rowAlignment="none" translatesAutoresizingMaskIntoConstraints="NO" id="JBb-4n-6Vj">
+                        <rect key="frame" x="20" y="60" width="288" height="70"/>
+                        <constraints>
+                            <constraint firstItem="oHk-rm-ZMe" firstAttribute="top" secondItem="JBb-4n-6Vj" secondAttribute="top" id="Yrz-dO-DLY"/>
+                        </constraints>
+                        <rows>
+                            <gridRow id="v2M-GS-GSP"/>
+                            <gridRow id="4NG-wI-KhF"/>
+                            <gridRow id="hAO-wl-29W"/>
+                        </rows>
+                        <columns>
+                            <gridColumn id="b6b-Ft-dgo"/>
+                            <gridColumn id="dte-Q5-77m"/>
+                        </columns>
+                        <gridCells>
+                            <gridCell row="v2M-GS-GSP" column="b6b-Ft-dgo" id="qPx-S4-J6U"/>
+                            <gridCell row="v2M-GS-GSP" column="dte-Q5-77m" id="0PY-mB-42M">
+                                <button key="contentView" horizontalHuggingPriority="800" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="oHk-rm-ZMe">
+                                    <rect key="frame" x="156" y="53" width="132" height="18"/>
+                                    <buttonCell key="cell" type="check" title="Randomise Order" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="dFA-39-Zrc">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="updateDefaults:" target="-2" id="0zA-3L-tUP"/>
+                                    </connections>
+                                </button>
+                            </gridCell>
+                            <gridCell row="4NG-wI-KhF" column="b6b-Ft-dgo" id="Q8w-L5-n0c"/>
+                            <gridCell row="4NG-wI-KhF" column="dte-Q5-77m" id="ll1-aG-0Jd">
+                                <button key="contentView" horizontalHuggingPriority="800" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="FHa-Qx-ZkE">
+                                    <rect key="frame" x="156" y="25" width="95" height="18"/>
+                                    <buttonCell key="cell" type="check" title="Mute Audio" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="GMF-Hi-DZp">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="updateDefaults:" target="-2" id="6yG-KH-AMP"/>
+                                    </connections>
+                                </button>
+                            </gridCell>
+                            <gridCell row="hAO-wl-29W" column="b6b-Ft-dgo" id="9Ws-tk-ypJ">
+                                <textField key="contentView" horizontalHuggingPriority="800" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="iWK-ML-fqF">
+                                    <rect key="frame" x="-2" y="0.0" width="97" height="16"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Limit quality to:" id="F2h-sA-TOe">
+                                        <font key="font" usesAppearanceFont="YES"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                            </gridCell>
+                            <gridCell row="hAO-wl-29W" column="dte-Q5-77m" id="bqr-Re-J5y">
+                                <popUpButton key="contentView" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HRa-JF-3MI">
+                                    <rect key="frame" x="155" y="-4" width="78" height="25"/>
+                                    <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="urU-nG-O8K" id="wwy-pw-kWC">
+                                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="menu"/>
+                                        <menu key="menu" id="PVu-GF-ZgO">
+                                            <items>
+                                                <menuItem title="Item 1" state="on" id="urU-nG-O8K"/>
+                                                <menuItem title="Item 2" id="MiK-91-3Tv"/>
+                                                <menuItem title="Item 3" id="gaW-Bt-3c0"/>
+                                            </items>
+                                        </menu>
+                                    </popUpButtonCell>
+                                    <connections>
+                                        <action selector="updateDefaults:" target="-2" id="7ER-fT-QDc"/>
+                                    </connections>
+                                </popUpButton>
+                            </gridCell>
+                        </gridCells>
+                    </gridView>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9ZO-f9-Bfa">
+                        <rect key="frame" x="131" y="13" width="66" height="32"/>
+                        <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Q4P-cz-hnP">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="closeConfigureSheet:" target="-2" id="HvT-oN-sRG"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="JBb-4n-6Vj" secondAttribute="trailing" constant="20" id="Dbc-6t-e1E"/>
+                    <constraint firstItem="JBb-4n-6Vj" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="FID-qI-PAn"/>
+                    <constraint firstAttribute="bottom" secondItem="9ZO-f9-Bfa" secondAttribute="bottom" constant="20" id="gTc-70-NcV"/>
+                    <constraint firstItem="9ZO-f9-Bfa" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="wqi-Uv-vls"/>
+                    <constraint firstItem="JBb-4n-6Vj" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="yBI-AI-XFG"/>
+                    <constraint firstItem="9ZO-f9-Bfa" firstAttribute="top" secondItem="JBb-4n-6Vj" secondAttribute="bottom" constant="20" id="zXg-jM-8Jd"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="7" y="47"/>
+        </window>
+    </objects>
+</document>

@@ -1,7 +1,14 @@
 import Cocoa
 
 class ConfigurationController: NSObject {
-    @IBOutlet var window: NSWindow?
+    @IBOutlet var window: NSWindow!
+    @IBOutlet var muteAudioCheckbox: NSButton!
+    @IBOutlet var randomiseOrderCheckbox: NSButton!
+    @IBOutlet var maximumQualityPopUpButton: NSPopUpButton!
+
+    let preferences = Preferences.shared
+
+    let streamingQualities = StreamingQuality.allCases
 
     override init() {
         super.init()
@@ -12,27 +19,24 @@ class ConfigurationController: NSObject {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        // Do your UI init here!
-//        canvasColorWell.color = Preferences.canvasColor.nsColor
+        muteAudioCheckbox.state = preferences.muteAudio ? .on : .off
+        randomiseOrderCheckbox.state = preferences.randomisePlayback ? .on : .off
+
+        maximumQualityPopUpButton.removeAllItems()
+        maximumQualityPopUpButton.addItems(withTitles: streamingQualities.map { $0.title })
+
+        if let idx = streamingQualities.firstIndex(of: preferences.highestQuality) {
+            maximumQualityPopUpButton.selectItem(at: idx)
+        }
     }
 
     @IBAction func updateDefaults(_ sender: AnyObject) {
-//        Preferences.canvasColor = Color(nsColor: canvasColorWell!.color)
+        preferences.muteAudio = muteAudioCheckbox.state == .on
+        preferences.randomisePlayback = randomiseOrderCheckbox.state == .on
+        preferences.highestQuality = streamingQualities[maximumQualityPopUpButton.indexOfSelectedItem]
     }
 
     @IBAction func closeConfigureSheet(_ sender: AnyObject) {
-        // Remember to close anything else first
-        NSColorPanel.shared.close()
-
-        // Now close the sheet (this works on older macOS versions too)
         window?.sheetParent?.endSheet(window!)
-
-        // Remember, you are still in memory at this point until you get killed by parent.
-        // If your parent is System Preferences, you will remain in memory as long as System
-        // Preferences is open. Reopening the sheet will just wake you up.
-        //
-        // An unfortunate side effect of this is that if your user updates to a new version with
-        // System Preferences open, they will see weird things (ui from old version running
-        // new code, etc), so tell them not to do that!
     }
 }
