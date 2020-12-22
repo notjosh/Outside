@@ -16,6 +16,8 @@ platform :mac do
 
     UI.user_error!("Version #{version} already released! Did you forget to bump the version number?") unless release == nil
 
+    changelog = read_changelog
+
     build
 
     xcarchive = Actions.lane_context[SharedValues::XCODEBUILD_ARCHIVE]
@@ -53,12 +55,16 @@ platform :mac do
       )
     end
 
+    stamp_changelog(section_identifier: "v#{version}")
+
+    git_commit(path: "./CHANGELOG.md", message: "Stamp CHANGELOG (v#{version})")
+
     push_to_git_remote()
     set_github_release(
       repository_name: "notjosh/Outside",
       name: "v#{version}",
       tag_name: "v#{version}",
-      description: "Release v#{version}",
+      description: changelog,
       upload_assets: [package_zip, dsym_zip],
     )
   end
