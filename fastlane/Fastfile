@@ -1,0 +1,63 @@
+default_platform(:mac)
+
+platform :mac do
+  desc "Build the .saver, notarise, release"
+  lane :build do
+    ensure_git_status_clean()
+
+    version = get_version_number(
+      target: "Outside",
+    )
+
+    # build .saver
+    build_mac_app(
+      scheme: "Outside",
+      configuration: "Release",
+      build_path: "build",
+    )
+
+    xcarchive = Actions.lane_context[SharedValues::XCODEBUILD_ARCHIVE]
+    package = Dir.chdir("..") do
+      Dir["#{xcarchive}/Products/**/*.saver"].first
+    end
+    dsym = Dir.chdir("..") do
+      Dir["#{xcarchive}/dSYMs/*.dSYM"].first
+    end
+
+    # verify signing
+    verify_build_screen_saver(
+      ipa_path: xcarchive,
+      bundle_identifier: "com.notjosh.Outside",
+      provisioning_type: "developer_id",
+      team_identifier: ENV["FL_NOTARIZE_ASC_PROVIDER"],
+    )
+
+    # notarise
+    notarize_screen_saver(
+      package: package,
+    )
+
+    # release
+    package_zip = "#{package}.zip"
+    dsym_zip = "#{dsym}.zip"
+
+    Dir.chdir("..") do
+      Actions.sh(
+        "ditto -c -k --rsrc --keepParent \"#{package}\" \"#{package_zip}\"",
+      )
+
+      Actions.sh(
+        "ditto -c -k --rsrc --keepParent \"#{dsym}\" \"#{dsym_zip}\"",
+      )
+    end
+
+    push_to_git_remote()
+    set_github_release(
+      repository_name: "notjosh/Outside",
+      name: "v#{version}",
+      tag_name: "v#{version}",
+      description: "Release v#{version}",
+      upload_assets: [package_zip, dsym_zip],
+    )
+  end
+end
