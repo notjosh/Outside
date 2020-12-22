@@ -16,7 +16,7 @@ It's soothing though, so that's neat.
 
 - [ ] OTA updates to `videos.json`
 - [ ] option to deactivate when on battery/low battery
-- [ ] video caching
+- [ ] video caching (via `AVAssetResourceLoader` and `AVURLAsset`)
 - [ ] shortcut to skip to next video
 - [ ] handle "offline" use case
 - [ ] configure metadata corner
