@@ -9,6 +9,13 @@ platform :mac do
       target: "Outside",
     )
 
+    release = get_github_release(
+      url: "notjosh/Outside",
+      version: "v#{version}",
+    )
+
+    UI.user_error!("Version #{version} already released! Did you forget to bump the version number?") unless release == nil
+
     # build .saver
     build_mac_app(
       scheme: "Outside",
