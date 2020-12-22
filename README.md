@@ -9,3 +9,4 @@ It's soothing though, so that's neat.
 # TODO
 
 - [ ] OTA updates to `videos.json`
+- [ ] Add thumbnail to prefpane
