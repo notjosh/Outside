@@ -7,13 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Bumped `videos.json`
+
 ## [v0.0.2] - 2020-12-22
 
 ### Added
 
 - Thumbnail for preference pane preview
 
-## [0.0.1] - 2020-12-22
+## [v0.0.1] - 2020-12-22
 
 ### Added
 
@@ -25,4 +29,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Preference: mute audio
 - Preference: randomise playback order
 
-[0.0.1]: https://github.com/olivierlacan/keep-a-changelog/releases/tag/v0.0.1
