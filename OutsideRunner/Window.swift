@@ -43,7 +43,7 @@ class Window: NSWindow {
             fatalError("Could not instantiate screen saver class from bundle")
         }
 
-        let instance = principalClass.init(frame: .zero, isPreview: false)
+        let instance = principalClass.init(frame: frame, isPreview: false)
 
         guard
             let view = instance as? NSView
