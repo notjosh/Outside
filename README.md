@@ -26,7 +26,7 @@ node ./scripts/update-json/index.js ./Outside/videos.json
 - [ ] OTA updates to `videos.json`
 - [ ] option to deactivate when on battery/low battery
 - [ ] video caching (via `AVAssetResourceLoader` and `AVURLAsset`)
-- [ ] shortcut to skip to next video
+- [ ] ~~shortcut to skip to next video~~ not possible as of 10.15 ([link](https://github.com/JohnCoates/Aerial/issues/1117#issuecomment-708282933))
 - [ ] handle "offline" use case
 - [ ] configure metadata corner
 - [ ] configure metadata timeout

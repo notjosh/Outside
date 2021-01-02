@@ -83,7 +83,6 @@ final class OutsideView: ScreenSaverView, ScreenSaverInterface {
 
         metadataTextField.translatesAutoresizingMaskIntoConstraints = false
         metadataTextField.maximumNumberOfLines = 2
-        metadataTextField.font = .systemFont(ofSize: preview ? 12 : 18, weight: .medium)
         metadataTextField.textColor = .white
 
         progressIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -316,8 +315,10 @@ final class OutsideView: ScreenSaverView, ScreenSaverInterface {
         shadow.shadowColor = .black
         shadow.shadowOffset = .init(width: 1, height: 1)
 
+        let fontSize: CGFloat = isPreview ? 12 : 24
+
         let attributes: [NSAttributedString.Key: Any] = [
-            .font: NSFont.systemFont(ofSize: 24, weight: .medium),
+            .font: NSFont.systemFont(ofSize: fontSize, weight: .medium),
             .foregroundColor: NSColor.white,
         ]
 
