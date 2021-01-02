@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17506"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -11,8 +11,6 @@
                 <outlet property="maximumQualityPopUpButton" destination="HRa-JF-3MI" id="y6G-NQ-pBX"/>
                 <outlet property="muteAudioCheckbox" destination="FHa-Qx-ZkE" id="0cb-Tm-Rk5"/>
                 <outlet property="randomiseOrderCheckbox" destination="oHk-rm-ZMe" id="PbU-2B-DyT"/>
-                <outlet property="showMetadataOnMouseMoveCheckbox" destination="g4X-r4-aHJ" id="thD-zT-4Sv"/>
-                <outlet property="useNextVideoShortcutCheckbox" destination="Ksi-tF-qg9" id="L3x-bO-wqw"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="trX-zM-h0D"/>
             </connections>
         </customObject>
@@ -21,14 +19,14 @@
         <window title="Outside" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="373" height="156"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="3008" height="1667"/>
-            <view key="contentView" wantsLayer="YES" misplaced="YES" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="373" height="156"/>
+            <rect key="contentRect" x="196" y="240" width="328" height="146"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1050"/>
+            <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
+                <rect key="frame" x="0.0" y="0.0" width="328" height="150"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <gridView xPlacement="leading" yPlacement="bottom" rowAlignment="none" translatesAutoresizingMaskIntoConstraints="NO" id="JBb-4n-6Vj">
-                        <rect key="frame" x="20" y="60" width="333" height="114"/>
+                        <rect key="frame" x="20" y="60" width="288" height="70"/>
                         <constraints>
                             <constraint firstItem="oHk-rm-ZMe" firstAttribute="top" secondItem="JBb-4n-6Vj" secondAttribute="top" id="Yrz-dO-DLY"/>
                         </constraints>
@@ -36,8 +34,6 @@
                             <gridRow id="v2M-GS-GSP"/>
                             <gridRow id="4NG-wI-KhF"/>
                             <gridRow id="hAO-wl-29W"/>
-                            <gridRow id="bCT-pd-3Ph"/>
-                            <gridRow id="YUb-PP-8te"/>
                         </rows>
                         <columns>
                             <gridColumn id="b6b-Ft-dgo"/>
@@ -47,7 +43,7 @@
                             <gridCell row="v2M-GS-GSP" column="b6b-Ft-dgo" id="qPx-S4-J6U"/>
                             <gridCell row="v2M-GS-GSP" column="dte-Q5-77m" id="0PY-mB-42M">
                                 <button key="contentView" horizontalHuggingPriority="800" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="oHk-rm-ZMe">
-                                    <rect key="frame" x="103" y="97" width="132" height="18"/>
+                                    <rect key="frame" x="156" y="53" width="132" height="18"/>
                                     <buttonCell key="cell" type="check" title="Randomise Order" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="dFA-39-Zrc">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                         <font key="font" metaFont="system"/>
@@ -59,9 +55,9 @@
                             </gridCell>
                             <gridCell row="4NG-wI-KhF" column="b6b-Ft-dgo" id="Q8w-L5-n0c"/>
                             <gridCell row="4NG-wI-KhF" column="dte-Q5-77m" id="ll1-aG-0Jd">
-                                <button key="contentView" horizontalHuggingPriority="800" verticalHuggingPriority="1000" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FHa-Qx-ZkE">
-                                    <rect key="frame" x="103" y="75" width="94" height="18"/>
-                                    <buttonCell key="cell" type="check" title="Mute audio" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="GMF-Hi-DZp">
+                                <button key="contentView" horizontalHuggingPriority="800" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="FHa-Qx-ZkE">
+                                    <rect key="frame" x="156" y="25" width="95" height="18"/>
+                                    <buttonCell key="cell" type="check" title="Mute Audio" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="GMF-Hi-DZp">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
@@ -70,33 +66,7 @@
                                     </connections>
                                 </button>
                             </gridCell>
-                            <gridCell row="hAO-wl-29W" column="b6b-Ft-dgo" id="9Ws-tk-ypJ"/>
-                            <gridCell row="hAO-wl-29W" column="dte-Q5-77m" id="bqr-Re-J5y">
-                                <button key="contentView" horizontalHuggingPriority="800" verticalHuggingPriority="1000" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g4X-r4-aHJ">
-                                    <rect key="frame" x="103" y="47" width="230" height="18"/>
-                                    <buttonCell key="cell" type="check" title="Show metadata by moving mouse" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="dq7-Mn-j9J">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <action selector="updateDefaults:" target="-2" id="bKR-15-WFy"/>
-                                    </connections>
-                                </button>
-                            </gridCell>
-                            <gridCell row="bCT-pd-3Ph" column="b6b-Ft-dgo" id="ave-LK-A4m"/>
-                            <gridCell row="bCT-pd-3Ph" column="dte-Q5-77m" id="PQV-nD-YDb">
-                                <button key="contentView" horizontalHuggingPriority="800" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Ksi-tF-qg9">
-                                    <rect key="frame" x="103" y="25" width="197" height="18"/>
-                                    <buttonCell key="cell" type="check" title="Right arrow plays next video" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="QEV-Kn-fFV">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <action selector="updateDefaults:" target="-2" id="kGU-4w-f1m"/>
-                                    </connections>
-                                </button>
-                            </gridCell>
-                            <gridCell row="YUb-PP-8te" column="b6b-Ft-dgo" id="YeN-CT-Dxc">
+                            <gridCell row="hAO-wl-29W" column="b6b-Ft-dgo" id="9Ws-tk-ypJ">
                                 <textField key="contentView" horizontalHuggingPriority="800" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="iWK-ML-fqF">
                                     <rect key="frame" x="-2" y="0.0" width="97" height="16"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="Limit quality to:" id="F2h-sA-TOe">
@@ -106,9 +76,9 @@
                                     </textFieldCell>
                                 </textField>
                             </gridCell>
-                            <gridCell row="YUb-PP-8te" column="dte-Q5-77m" id="0zd-e6-H9n">
+                            <gridCell row="hAO-wl-29W" column="dte-Q5-77m" id="bqr-Re-J5y">
                                 <popUpButton key="contentView" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HRa-JF-3MI">
-                                    <rect key="frame" x="102" y="-4" width="78" height="25"/>
+                                    <rect key="frame" x="155" y="-4" width="78" height="25"/>
                                     <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="urU-nG-O8K" id="wwy-pw-kWC">
                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="menu"/>
@@ -128,7 +98,7 @@
                         </gridCells>
                     </gridView>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9ZO-f9-Bfa">
-                        <rect key="frame" x="154" y="13" width="66" height="32"/>
+                        <rect key="frame" x="131" y="13" width="66" height="32"/>
                         <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Q4P-cz-hnP">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -147,7 +117,7 @@
                     <constraint firstItem="9ZO-f9-Bfa" firstAttribute="top" secondItem="JBb-4n-6Vj" secondAttribute="bottom" constant="20" id="zXg-jM-8Jd"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="29.5" y="47"/>
+            <point key="canvasLocation" x="7" y="47"/>
         </window>
     </objects>
 </document>

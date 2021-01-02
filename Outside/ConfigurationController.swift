@@ -4,8 +4,6 @@ class ConfigurationController: NSObject {
     @IBOutlet var window: NSWindow!
     @IBOutlet var muteAudioCheckbox: NSButton!
     @IBOutlet var randomiseOrderCheckbox: NSButton!
-    @IBOutlet var useNextVideoShortcutCheckbox: NSButton!
-    @IBOutlet var showMetadataOnMouseMoveCheckbox: NSButton!
     @IBOutlet var maximumQualityPopUpButton: NSPopUpButton!
 
     let preferences = Preferences.shared
@@ -23,8 +21,6 @@ class ConfigurationController: NSObject {
 
         muteAudioCheckbox.state = preferences.muteAudio ? .on : .off
         randomiseOrderCheckbox.state = preferences.randomisePlayback ? .on : .off
-        useNextVideoShortcutCheckbox.state = preferences.useNextVideoShortcut ? .on : .off
-        showMetadataOnMouseMoveCheckbox.state = preferences.showMetadataOnMouseMove ? .on : .off
 
         maximumQualityPopUpButton.removeAllItems()
         maximumQualityPopUpButton.addItems(withTitles: streamingQualities.map { $0.title })
@@ -37,8 +33,6 @@ class ConfigurationController: NSObject {
     @IBAction func updateDefaults(_ sender: AnyObject) {
         preferences.muteAudio = muteAudioCheckbox.state == .on
         preferences.randomisePlayback = randomiseOrderCheckbox.state == .on
-        preferences.useNextVideoShortcut = useNextVideoShortcutCheckbox.state == .on
-        preferences.showMetadataOnMouseMove = showMetadataOnMouseMoveCheckbox.state == .on
         preferences.highestQuality = streamingQualities[maximumQualityPopUpButton.indexOfSelectedItem]
     }
 

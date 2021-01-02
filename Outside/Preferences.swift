@@ -15,12 +15,6 @@ class Preferences {
 
     @Storage(key: "HighestQuality", defaultValue: StreamingQuality.q1080p)
     var highestQuality: StreamingQuality
-
-    @Storage(key: "UseNextVideoShortcut", defaultValue: true)
-    var useNextVideoShortcut: Bool
-
-    @Storage(key: "ShowMetadataOnMouseMove", defaultValue: true)
-    var showMetadataOnMouseMove: Bool
 }
 
 enum StreamingQuality: Int, Codable, CaseIterable {
