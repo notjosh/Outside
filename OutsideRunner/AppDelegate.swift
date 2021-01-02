@@ -12,16 +12,7 @@ protocol Foo {
 class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet var window: Window!
 
-    var outsideView: NSView?
-
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        window.keyHandler = { [weak self] code in
-            switch code {
-            case .space:
-                self?.window.screenSaverView?.next()
-            }
-        }
-
         window.makeKeyAndOrderFront(self)
         window.reload()
     }

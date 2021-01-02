@@ -5,18 +5,7 @@ enum KeyCode: UInt16 {
 }
 
 class Window: NSWindow {
-    var keyHandler: ((KeyCode) -> Void)?
-
     var screenSaverView: ScreenSaverInterface?
-
-    override func keyDown(with event: NSEvent) {
-        if let keyCode = KeyCode(rawValue: event.keyCode) {
-            keyHandler?(keyCode)
-            return
-        }
-
-        super.keyDown(with: event)
-    }
 
     func reload() {
         self.screenSaverView?.stopAnimation()
@@ -75,6 +64,7 @@ class Window: NSWindow {
 
         screenSaverView = instance
 
+        makeFirstResponder(view)
         instance.startAnimation()
     }
 }

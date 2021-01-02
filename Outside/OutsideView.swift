@@ -2,9 +2,14 @@ import AVKit
 import AVFoundation
 import ScreenSaver
 
-let metadataTimeout: TimeInterval = 25
+let metadataTimeout: TimeInterval = 3
 
-class OutsideView: ScreenSaverView, ScreenSaverInterface {
+enum KeyCode: UInt16 {
+    case space = 0x31
+    case rightArrow = 0x7c
+}
+
+final class OutsideView: ScreenSaverView, ScreenSaverInterface {
     lazy var configurationController = ConfigurationController()
 
     let playlist = Playlist()
@@ -124,6 +129,8 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
     }
 
     override func startAnimation() {
+        window?.acceptsMouseMovedEvents = true
+
         super.startAnimation()
     }
 
@@ -156,6 +163,49 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         }
     }
 
+    override var acceptsFirstResponder: Bool {
+        true
+    }
+
+    override func keyDown(with event: NSEvent) {
+        if preferences.useNextVideoShortcut,
+           let keyCode = KeyCode(rawValue: event.keyCode) {
+            if keyCode == .rightArrow {
+                next()
+                return
+            }
+        }
+
+        super.keyDown(with: event)
+    }
+
+    override func mouseEntered(with event: NSEvent) {
+        guard preferences.showMetadataOnMouseMove else {
+            super.mouseEntered(with: event)
+            return
+        }
+
+        // no-op
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        guard preferences.showMetadataOnMouseMove else {
+            super.mouseExited(with: event)
+            return
+        }
+
+        // no-op
+    }
+
+    override func mouseMoved(with event: NSEvent) {
+        guard preferences.showMetadataOnMouseMove else {
+            super.mouseMoved(with: event)
+            return
+        }
+
+        showMetadata()
+    }
+
     private func configureFadeInOut() {
         guard let video = metadata?.1 else {
             return
@@ -176,7 +226,15 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         fade.delegate = self
         playerLayer.add(fade, forKey: "fade")
 
+        showMetadata()
+    }
+
+    private func showMetadata() {
+        metadataContainer.isHidden = false
+        metadataContainer.alphaValue = 1
+
         metadataVisibleTimer?.invalidate()
+        metadataVisibleTimer = nil
         metadataVisibleTimer = Timer.scheduledTimer(withTimeInterval: metadataTimeout, repeats: false) { [weak self] timer in
             NSAnimationContext.runAnimationGroup { context in
                 context.duration = 0.3
@@ -274,8 +332,8 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         metadata.append(NSAttributedString(string: item.author, attributes: shadowedAttributes))
 
         metadataTextField.attributedStringValue = metadata
-        metadataContainer.isHidden = false
-        metadataContainer.alphaValue = 1
+
+        showMetadata()
 
         player.replaceCurrentItem(with: playerItem)
         player.actionAtItemEnd = .none
