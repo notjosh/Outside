@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Included a script to fetch/update latest `videos.json` content
+
+### Changed
+
+- Updated `videos.json` to include timestamp
+
 ## [v0.0.3] - 2021-01-01
 
 ### Changed
@@ -30,4 +38,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Preference: maximum stream quality
 - Preference: mute audio
 - Preference: randomise playback order
-
