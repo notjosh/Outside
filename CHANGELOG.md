@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated `videos.json` to include timestamp
 - Using `NSVisualEffectView` for background of metadata view
 
+### Fixed
+
+- Smaller font size in preview applied to attributed strings
+
 ## [v0.0.3] - 2021-01-01
 
 ### Changed
