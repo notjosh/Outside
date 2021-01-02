@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4225F574259FF61B00F4FC6E /* BlurEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4225F573259FF61B00F4FC6E /* BlurEffectView.swift */; };
 		424857A525900DCD004681EE /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424857A425900DCD004681EE /* Playlist.swift */; };
 		424857A925900E76004681EE /* videos.json in Resources */ = {isa = PBXBuildFile; fileRef = 424857A825900E76004681EE /* videos.json */; };
 		424857AD25900ECB004681EE /* Bundle+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424857AC25900ECB004681EE /* Bundle+Decodable.swift */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4225F573259FF61B00F4FC6E /* BlurEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurEffectView.swift; sourceTree = "<group>"; };
 		424857A425900DCD004681EE /* Playlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
 		424857A825900E76004681EE /* videos.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = videos.json; sourceTree = "<group>"; };
 		424857AC25900ECB004681EE /* Bundle+Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Decodable.swift"; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				4275E5D6258FAAFC0041705B /* OutsideView.swift */,
+				4225F573259FF61B00F4FC6E /* BlurEffectView.swift */,
 				4275E62C258FAFD70041705B /* ConfigurationController.swift */,
 				424857D025915DE1004681EE /* ConfigureSheet.xib */,
 				424857C225902FF7004681EE /* Preferences.swift */,
@@ -258,6 +261,7 @@
 				424857B1259010EF004681EE /* PlaylistItem.swift in Sources */,
 				424857B92590145F004681EE /* URLSession+Decodable.swift in Sources */,
 				4275E5D7258FAAFC0041705B /* OutsideView.swift in Sources */,
+				4225F574259FF61B00F4FC6E /* BlurEffectView.swift in Sources */,
 				424857B5259011CC004681EE /* Vimeo.swift in Sources */,
 				424857C325902FF7004681EE /* Preferences.swift in Sources */,
 				424857A525900DCD004681EE /* Playlist.swift in Sources */,

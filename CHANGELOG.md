@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Updated `videos.json` to include timestamp
+- Using `NSVisualEffectView` for background of metadata view
 
 ## [v0.0.3] - 2021-01-01
 

@@ -2,6 +2,8 @@ import AVKit
 import AVFoundation
 import ScreenSaver
 
+let metadataTimeout: TimeInterval = 25
+
 class OutsideView: ScreenSaverView, ScreenSaverInterface {
     lazy var configurationController = ConfigurationController()
 
@@ -12,7 +14,7 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
     let player: AVPlayer
     let playerLayer: AVPlayerLayer
 
-    let metadataContainer: NSView
+    let metadataContainer: NSVisualEffectView
     let metadataTextField: NSTextField
     let progressIndicator: NSProgressIndicator
 
@@ -40,7 +42,7 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         player = AVPlayer()
         playerLayer = AVPlayerLayer(player: player)
 
-        metadataContainer = NSView(frame: .zero)
+        metadataContainer = BlurEffectView(frame: .zero)
         metadataTextField = NSTextField(labelWithString: "")
         progressIndicator = NSProgressIndicator(frame: .zero)
 
@@ -68,12 +70,15 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
 
         metadataContainer.translatesAutoresizingMaskIntoConstraints = false
         metadataContainer.wantsLayer = true
-        metadataContainer.layer?.backgroundColor = NSColor.gray.withAlphaComponent(0.4).cgColor
         metadataContainer.layer?.cornerRadius = 5
+        metadataContainer.appearance = NSAppearance(named: .vibrantDark)
+        metadataContainer.blendingMode = .withinWindow
+        metadataContainer.material = .fullScreenUI
+        metadataContainer.state = .active
 
         metadataTextField.translatesAutoresizingMaskIntoConstraints = false
         metadataTextField.maximumNumberOfLines = 2
-        metadataTextField.font = .systemFont(ofSize: isPreview ? 12 : 18, weight: .medium)
+        metadataTextField.font = .systemFont(ofSize: preview ? 12 : 18, weight: .medium)
         metadataTextField.textColor = .white
 
         progressIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -172,7 +177,7 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         playerLayer.add(fade, forKey: "fade")
 
         metadataVisibleTimer?.invalidate()
-        metadataVisibleTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { [weak self] timer in
+        metadataVisibleTimer = Timer.scheduledTimer(withTimeInterval: metadataTimeout, repeats: false) { [weak self] timer in
             NSAnimationContext.runAnimationGroup { context in
                 context.duration = 0.3
                 context.allowsImplicitAnimation = true
