@@ -1,12 +1,23 @@
 import Foundation
 
+struct Manifest: Decodable {
+    let timestamp: Date
+    let videos: [PlaybackItem]
+}
+
 class Playlist {
     private let items: [PlaybackItem]
 
     private var index: Int?
 
     init() {
-        items = Bundle(for: type(of: self)).decode([PlaybackItem].self, from: "videos.json")
+        let manifest = Bundle(for: type(of: self)).decode(
+            Manifest.self,
+            from: "videos.json",
+            dateDecodingStrategy: .iso8601withFractionalSeconds
+        )
+
+        items = manifest.videos
     }
 
     func next(randomised: Bool) -> PlaybackItem? {

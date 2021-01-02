@@ -6,13 +6,22 @@ The file `videos.json` drives the playlist, which can be updated to consume othe
 
 It's soothing though, so that's neat.
 
-# Credits
+## Tasks
+
+### Update `videos.json`
+
+```sh
+# first time: cd ./scripts/update-json && yarn
+node ./scripts/update-json/index.js ./Outside/videos.json
+```
+
+## Credits
 
 - Original inspiration: [WindowSwap](https://window-swap.com/)
 - Screen saver template: [ScreenSaverMinimal](https://github.com/glouel/ScreenSaverMinimal)
 - Thumbnail icon: [Window View](https://flic.kr/p/fhwBVB)
 
-# TODO
+## TODO
 
 - [ ] OTA updates to `videos.json`
 - [ ] option to deactivate when on battery/low battery

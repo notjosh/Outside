@@ -1,5 +1,34 @@
 import Foundation
 
+extension Formatter {
+    static var iso8601withFractionalSeconds: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [
+            .withInternetDateTime,
+            .withFractionalSeconds
+        ]
+        return formatter
+    }()
+}
+
+extension JSONDecoder.DateDecodingStrategy {
+    static let iso8601withFractionalSeconds = JSONDecoder.DateDecodingStrategy.custom { decoder -> Date in
+        let container = try decoder.singleValueContainer()
+        let dateString = try container.decode(String.self)
+
+        guard
+            let date = DateFormatter.iso8601withFractionalSeconds.date(from: dateString)
+        else {
+            throw DecodingError.dataCorruptedError(
+                in: container,
+                debugDescription: "Date value doesn't look like an ISO8601 string."
+            )
+        }
+
+        return date
+    }
+}
+
 extension Bundle {
     func decode<T: Decodable>(_ type: T.Type, from file: String, dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = .deferredToDate, keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys) -> T {
         guard let url = self.url(forResource: file, withExtension: nil) else {
