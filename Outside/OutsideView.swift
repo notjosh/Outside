@@ -2,7 +2,7 @@ import AVKit
 import AVFoundation
 import ScreenSaver
 
-let metadataTimeout: TimeInterval = 25
+let metadataTimeout: TimeInterval = 5
 
 class OutsideView: ScreenSaverView, ScreenSaverInterface {
     lazy var configurationController = ConfigurationController()
