@@ -17,6 +17,7 @@
 		424857BF25902122004681EE /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424857BE25902122004681EE /* Window.swift */; };
 		424857C325902FF7004681EE /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424857C225902FF7004681EE /* Preferences.swift */; };
 		424857D125915DE1004681EE /* ConfigureSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 424857D025915DE1004681EE /* ConfigureSheet.xib */; };
+		42674B1F25A3DDDE006BDA8D /* PlaylistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42674B1E25A3DDDE006BDA8D /* PlaylistManager.swift */; };
 		4275E5D7258FAAFC0041705B /* OutsideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4275E5D6258FAAFC0041705B /* OutsideView.swift */; };
 		4275E61A258FAEA40041705B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4275E619258FAEA40041705B /* AppDelegate.swift */; };
 		4275E61C258FAEA50041705B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4275E61B258FAEA50041705B /* Assets.xcassets */; };
@@ -49,6 +50,7 @@
 		424857BE25902122004681EE /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
 		424857C225902FF7004681EE /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		424857D025915DE1004681EE /* ConfigureSheet.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfigureSheet.xib; sourceTree = "<group>"; };
+		42674B1E25A3DDDE006BDA8D /* PlaylistManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistManager.swift; sourceTree = "<group>"; };
 		4275E5C7258FAA720041705B /* Outside.saver */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Outside.saver; sourceTree = BUILT_PRODUCTS_DIR; };
 		4275E5CE258FAA720041705B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4275E5D6258FAAFC0041705B /* OutsideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutsideView.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				424857B0259010EF004681EE /* PlaylistItem.swift */,
 				424857AC25900ECB004681EE /* Bundle+Decodable.swift */,
 				424857B82590145F004681EE /* URLSession+Decodable.swift */,
+				42674B1E25A3DDDE006BDA8D /* PlaylistManager.swift */,
 				42C1F1FB25923D8B003EE996 /* thumbnail.png */,
 				42C1F1FA25923D8A003EE996 /* thumbnail@2x.png */,
 			);
@@ -265,6 +268,7 @@
 				424857B5259011CC004681EE /* Vimeo.swift in Sources */,
 				424857C325902FF7004681EE /* Preferences.swift in Sources */,
 				424857A525900DCD004681EE /* Playlist.swift in Sources */,
+				42674B1F25A3DDDE006BDA8D /* PlaylistManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

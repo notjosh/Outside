@@ -7,9 +7,10 @@ let metadataTimeout: TimeInterval = 5
 class OutsideView: ScreenSaverView, ScreenSaverInterface {
     lazy var configurationController = ConfigurationController()
 
-    let playlist = Playlist()
+    let playlistManager = PlaylistManager.shared
     let vimeo = Vimeo()
     let preferences = Preferences.shared
+    var playlist: Playlist?
 
     let player: AVPlayer
     let playerLayer: AVPlayerLayer
@@ -202,12 +203,19 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
 
         playerLayer.addObserver(self, forKeyPath: "readyForDisplay", options: .new, context: nil)
 
-        next()
+        showLoading()
+        playlistManager.load { [weak self] playlist in
+            self?.playlist = playlist
+
+            DispatchQueue.main.async {
+                self?.next()
+            }
+        }
     }
 
     func next() {
         guard
-            let item = playlist.next(randomised: preferences.randomisePlayback)
+            let item = playlist?.next(randomised: preferences.randomisePlayback)
         else {
             print("no next item, dunno want to do, bailing")
             return

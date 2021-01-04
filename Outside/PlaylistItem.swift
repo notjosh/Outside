@@ -1,5 +1,10 @@
 import Foundation
 
+struct Manifest: Decodable {
+    let timestamp: Date
+    let videos: [PlaybackItem]
+}
+
 struct PlaybackItem: Decodable {
     let id: Int
     let vimeoId: String
