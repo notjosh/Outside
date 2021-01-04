@@ -15,6 +15,13 @@ It's soothing though, so that's neat.
 node ./scripts/update-json/index.js ./Outside/videos.json
 ```
 
+### Release new build
+
+```sh
+agvtool new-marketing-version [version]
+bundle exec fastlane release
+```
+
 ## Credits
 
 - Original inspiration: [WindowSwap](https://window-swap.com/)
