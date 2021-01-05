@@ -1,11 +1,11 @@
 import Foundation
 
-struct Manifest: Decodable {
+struct Manifest: Codable {
     let timestamp: Date
     let videos: [PlaybackItem]
 }
 
-struct PlaybackItem: Decodable {
+struct PlaybackItem: Codable {
     let id: Int
     let vimeoId: String
     let location: String

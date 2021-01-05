@@ -58,13 +58,10 @@ class Vimeo {
     func fetchPlaybackURL(of id: String, maximumHeight: Int = 1080, callback: @escaping (Result<(URL, VimeoConfigurationVideo), Error>) -> Void) {
         let configURL = "https://player.vimeo.com/video/\(id)/config"
 
-        print("fetching ID: \(id)")
-
         let url = URL(string: configURL)!
         let request = URLRequest(url: url)
 
         if let task = task, task.state == .running {
-            print("cancelling")
             task.cancel()
             self.task = nil
         }

@@ -5,7 +5,13 @@ enum URLSessionError: Error {
 }
 
 extension URLSession {
-    func perform<T: Decodable>(_ request: URLRequest, decode decodable: T.Type, result: @escaping (Result<T, Error>) -> Void) -> URLSessionDataTask {
+    func perform<T: Decodable>(
+        _ request: URLRequest,
+        decode decodable: T.Type,
+        dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = .deferredToDate,
+        keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys,
+        result: @escaping (Result<T, Error>) -> Void
+    ) -> URLSessionDataTask {
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let error = error {
                 result(.failure(error))
@@ -22,8 +28,18 @@ extension URLSession {
             }
 
             do {
-                let object = try JSONDecoder().decode(decodable, from: data)
-                result(.success(object))
+                if
+                    let object = T(
+                        json: data,
+                        dateDecodingStrategy: dateDecodingStrategy,
+                        keyDecodingStrategy: keyDecodingStrategy
+                    )
+                {
+                    result(.success(object))
+                } else {
+                    result(.failure(URLSessionError.dataError))
+                    return
+                }
             } catch {
                 result(.failure(error))
             }
