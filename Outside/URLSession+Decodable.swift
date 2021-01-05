@@ -26,24 +26,19 @@ extension URLSession {
                 result(.failure(URLSessionError.dataError))
                 return
             }
-
-            do {
-                if
-                    let object = T(
-                        json: data,
-                        dateDecodingStrategy: dateDecodingStrategy,
-                        keyDecodingStrategy: keyDecodingStrategy
-                    )
-                {
-                    result(.success(object))
-                } else {
-                    result(.failure(URLSessionError.dataError))
-                    return
-                }
-            } catch {
-                result(.failure(error))
+            
+            if
+                let object = T(
+                    json: data,
+                    dateDecodingStrategy: dateDecodingStrategy,
+                    keyDecodingStrategy: keyDecodingStrategy
+                )
+            {
+                result(.success(object))
+            } else {
+                result(.failure(URLSessionError.dataError))
+                return
             }
-
         }
 
         task.resume()
