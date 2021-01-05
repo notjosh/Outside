@@ -36,6 +36,10 @@ class ConfigurationController: NSObject {
         preferences.highestQuality = streamingQualities[maximumQualityPopUpButton.indexOfSelectedItem]
     }
 
+    @IBAction func clearCache(_ sender: AnyObject) {
+        PlaylistManager.shared.clearCache()
+    }
+
     @IBAction func closeConfigureSheet(_ sender: AnyObject) {
         window?.sheetParent?.endSheet(window!)
     }

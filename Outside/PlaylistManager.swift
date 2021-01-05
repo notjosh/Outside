@@ -10,7 +10,7 @@ class PlaylistManager {
     private var task: URLSessionDataTask?
     private let fileManager = FileManager.default
 
-    var cachedFileURL: URL {
+    private var cachedFileURL: URL {
         let documentDirectory = try! fileManager.url(
             for: .documentDirectory,
             in: .userDomainMask,
@@ -25,6 +25,10 @@ class PlaylistManager {
         loadManifest { manifest in
             completion(Playlist(items: manifest.videos))
         }
+    }
+
+    func clearCache() {
+        try? fileManager.removeItem(at: cachedFileURL)
     }
 
     private func loadManifest(completion: @escaping (Manifest) -> Void) {
