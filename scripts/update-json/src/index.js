@@ -1,7 +1,6 @@
 import { promises as fs } from "fs";
 
 import windowSwap from "./window-swap/index.js";
-import extractVideos from "./extract-videos.js";
 import filterValid from "./vimeo/filter-valid.js";
 
 const run = async (outputPath) => {
@@ -10,16 +9,10 @@ const run = async (outputPath) => {
   }
 
   try {
-    const sources = await windowSwap();
-
-    if (sources == null) {
-      throw new Error("no sources found from sourcemap");
-    }
-
-    const videos = await extractVideos(sources);
+    const videos = await windowSwap();
 
     if (videos == null) {
-      throw new Error("no videos found in exports");
+      throw new Error("no videos found from site source");
     }
 
     console.log(`found ${videos.length} videos`);

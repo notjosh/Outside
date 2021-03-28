@@ -5,11 +5,12 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "acorn": "^8.1.0",
     "cheerio": "^1.0.0-rc.5",
+    "estraverse": "^5.2.0",
     "module-from-string": "^2.0.0",
     "node-fetch": "^2.6.1",
     "node-fetch-retry": "^1.1.1",
-    "source-map-resolve": "^0.6.0",
     "tiny-async-pool": "^1.2.0"
   }
 }

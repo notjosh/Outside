@@ -1,7 +1,7 @@
 import cheerio from "cheerio";
 import fetch from "node-fetch-retry";
 
-const ROOT = "https://window-swap.com";
+const ROOT = "https://www.window-swap.com";
 
 const options = { retry: 3, pause: 1000 };
 
@@ -18,7 +18,7 @@ const fetchSource = async () => {
         return false;
       }
 
-      return src.match(/main\.[a-fA-F0-9]{8}\.chunk\.js$/) != null;
+      return src.match(/main\.[a-fA-F0-9]{20}\.js$/) != null;
     })
     .attr("src");
 
@@ -28,16 +28,13 @@ const fetchSource = async () => {
 
   console.log(`found main.js script: ${script}`);
 
-  const sourceURL = `${ROOT}${script}`;
-  const mapURL = `${ROOT}${script}.map`;
+  const normalisedPath = script.startsWith("/") ? script : `/${script}`;
+
+  const sourceURL = `${ROOT}${normalisedPath}`;
 
   const source = await (await fetch(sourceURL, options)).text();
-  const map = await (await fetch(mapURL, options)).text();
 
-  return {
-    source,
-    map,
-  };
+  return source;
 };
 
 export default fetchSource;
