@@ -22,7 +22,11 @@ const windowSwap = async () => {
   const response = await fetchSource();
   const sources = resolve(response);
 
-  return sources;
+  return sources.map((source) => ({
+    ...source,
+    location: source.location.trim(),
+    author: source.author.trim(),
+  }));
 };
 
 export default windowSwap;
