@@ -6,7 +6,7 @@ const ROOT = "https://www.window-swap.com";
 const options = { retry: 3, pause: 1000 };
 
 const fetchSource = async () => {
-  const response = await fetch(`${ROOT}/window`, options);
+  const response = await fetch(`${ROOT}/Window`, options);
   const body = await response.text();
 
   const $ = cheerio.load(body);

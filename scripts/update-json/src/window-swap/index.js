@@ -20,7 +20,7 @@ import resolve from "./resolve.js";
  */
 const windowSwap = async () => {
   const response = await fetchSource();
-  const sources = await resolve(response);
+  const sources = resolve(response);
 
   return sources;
 };

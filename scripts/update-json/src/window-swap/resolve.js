@@ -26,7 +26,7 @@ const findVideosInModule = (body) => {
               if (init.elements.length === 0) {
                 return false;
               }
-              let looksOkay = true;
+              let looksOkay = false;
               const hasProperty = (properties, propertyName) => {
                 return (
                   properties.find((property) => {
@@ -50,7 +50,7 @@ const findVideosInModule = (body) => {
                   hasProperty(element.properties, "url") &&
                   hasProperty(element.properties, "location") &&
                   hasProperty(element.properties, "author");
-                looksOkay = looksOkay && hasProperties;
+                looksOkay = looksOkay || hasProperties;
               }
               return looksOkay;
             }
@@ -159,7 +159,18 @@ const extractFrom = (source) => {
       const start = result.start;
       const end = result.end;
       const js = source.substring(start, end);
-      return eval(js);
+      const list = eval(js);
+
+      // we've only found that we have _some_ valid videos, so let's filter out anything that looks actually invalid
+      const valid = list.filter(
+        (video) =>
+          typeof video.id === "number" &&
+          typeof video.url === "string" &&
+          typeof video.location === "string" &&
+          typeof video.author === "string"
+      );
+
+      return valid;
     }
   }
 };
@@ -168,7 +179,7 @@ const extractFrom = (source) => {
  * @param {string} source
  * @returns {Video[]|null}
  */
-const resolve = async (source) => {
+const resolve = (source) => {
   if (source == null) {
     return null;
   }
