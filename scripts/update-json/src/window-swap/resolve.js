@@ -192,6 +192,12 @@ const extractFrom = (source) => {
         log(`returning video count: ${valids[0].length}`);
         return _.sortBy(valids[0], 'url');
       } else if (valids.length > 1) {
+        // there's a difference between arrays where "logged in" vs "logged out",
+        // but it doesn't seem like it's actually being used yet. I think it's just
+        // incentive, not an actual functional difference.
+        //
+        // so, we just merge the arrays, and pull out any unique nodes, showing all
+        // of everything that we can.
         const joined = uniq([].concat.apply([], valids));
         log(`returning merged video count: ${joined.length}`);
 
