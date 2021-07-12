@@ -1,5 +1,5 @@
-import fetchSource from "./fetch-source.js";
-import resolve from "./resolve.js";
+import fetchSource from './fetch-source.js';
+import resolve from './resolve.js';
 
 /**
  * @typedef {Object} WindowSwapSource

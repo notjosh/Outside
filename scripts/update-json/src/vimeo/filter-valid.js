@@ -1,5 +1,5 @@
-import fetch from "node-fetch";
-import asyncPool from "tiny-async-pool";
+import fetch from 'node-fetch';
+import asyncPool from 'tiny-async-pool';
 
 const INTERVAL = 0;
 const CONCURRENCY = 5;
@@ -35,12 +35,10 @@ const filter = async (array, predicate) => {
 const isValidVideo = async (video) => {
   const url = `https://player.vimeo.com/video/${video.url}/config`;
 
-  console.log(
-    `checking: #${video.id} (${url}): ${video.author} - ${video.location}`
-  );
+  console.log(`checking: #${url}: ${video.author} - ${video.location}`);
 
   let ok = false;
-  let status = "<unknown>";
+  let status = '<unknown>';
 
   try {
     const response = await fetch(url);
@@ -50,7 +48,7 @@ const isValidVideo = async (video) => {
     console.log(error);
   }
 
-  console.log(`...#${video.id} (${url}): ${ok ? "✅" : "❌"} ${status}`);
+  console.log(`...#${url}: ${ok ? '✅' : '❌'} ${status}`);
 
   // don't spam the endpoint
   await sleep(INTERVAL);

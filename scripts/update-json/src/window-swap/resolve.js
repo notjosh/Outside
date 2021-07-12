@@ -52,7 +52,6 @@ const findVideoSectionsInModule = (body) => {
                   continue;
                 }
                 const hasProperties =
-                  hasProperty(element.properties, 'id') &&
                   hasProperty(element.properties, 'url') &&
                   hasProperty(element.properties, 'location') &&
                   hasProperty(element.properties, 'author');
@@ -179,7 +178,6 @@ const extractFrom = (source) => {
         // we've only found that we have _some_ valid videos, so let's filter out anything that looks actually invalid
         const valid = list.filter(
           (video) =>
-            typeof video.id === 'number' &&
             typeof video.url === 'string' &&
             typeof video.location === 'string' &&
             typeof video.author === 'string'
@@ -221,7 +219,10 @@ const resolve = (source) => {
     return null;
   }
 
-  const sources = extractFrom(source);
+  const sources = extractFrom(source).map((v, idx) => ({
+    id: idx,
+    ...v,
+  }));
 
   return sources;
 };
