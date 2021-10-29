@@ -230,7 +230,7 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         playerLayer.isHidden = true
         playerLayer.opacity = 0
 
-        vimeo.fetchPlaybackURL(of: item.vimeoId, maximumHeight: preferences.highestQuality.rawValue) { [weak self] result in
+        vimeo.fetchPlaybackURL(of: item.vimeoId, params: item.params, maximumHeight: preferences.highestQuality.rawValue) { [weak self] result in
             guard let self = self else {
                 return
             }

@@ -23,13 +23,9 @@ struct VimeoConfigurationVideo: Decodable {
 }
 
 struct VimeoConfigurationProgressiveFile: Decodable {
-    let profile: Int
     let width: Int
     let height: Int
-    let mime: String
-    let fps: Int
     let url: URL
-    let cdn: String
     let quality: String
 //    let id: String // can be number or string, but we're not using either at the moment so can be ignored
     let origin: String
@@ -55,11 +51,15 @@ enum VimeoError: Error {
 class Vimeo {
     var task: URLSessionDataTask?
 
-    func fetchPlaybackURL(of id: String, maximumHeight: Int = 1080, callback: @escaping (Result<(URL, VimeoConfigurationVideo), Error>) -> Void) {
+    func fetchPlaybackURL(of id: String, params: [String: String], maximumHeight: Int = 1080, callback: @escaping (Result<(URL, VimeoConfigurationVideo), Error>) -> Void) {
         let configURL = "https://player.vimeo.com/video/\(id)/config"
 
-        let url = URL(string: configURL)!
-        let request = URLRequest(url: url)
+        var urlComponents = URLComponents(string: configURL)!
+        urlComponents.queryItems = params.map { key, value in
+            URLQueryItem(name: key, value: value)
+        }
+
+        let request = URLRequest(url: urlComponents.url!)
 
         if let task = task, task.state == .running {
             task.cancel()

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Generic mechanism for updating query parameters via JSON
+
 ## [v0.1.0] - 2021-01-05
 
 ### Added
