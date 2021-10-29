@@ -33,22 +33,23 @@ const filter = async (array, predicate) => {
  * @returns {Promise<boolean>}
  */
 const isValidVideo = async (video) => {
-  const url = `https://player.vimeo.com/video/${video.url}/config`;
+  const url = `https://player.vimeo.com/video/${video.url}/config?`;
+  const params = new URLSearchParams(video.params);
 
-  console.log(`checking: #${url}: ${video.author} - ${video.location}`);
+  console.log(`checking: ${url + params}: ${video.author} - ${video.location}`);
 
   let ok = false;
   let status = '<unknown>';
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(url + params);
     ok = response.ok;
     status = `${response.status} ${response.statusText}`;
   } catch (error) {
     console.log(error);
   }
 
-  console.log(`...#${url}: ${ok ? '✅' : '❌'} ${status}`);
+  console.log(`...${url + params}: ${ok ? '✅' : '❌'} ${status}`);
 
   // don't spam the endpoint
   await sleep(INTERVAL);

@@ -219,10 +219,21 @@ const resolve = (source) => {
     return null;
   }
 
-  const sources = extractFrom(source).map((v, idx) => ({
-    id: idx,
-    ...v,
-  }));
+  const sources = extractFrom(source)
+    .map((v, idx) => ({
+      id: idx,
+      service: 'vimeo',
+      ...v,
+    }))
+    .map((v) => {
+      if (v.url1 != null) {
+        v.params = {
+          h: v.url1,
+        };
+        delete v.url1;
+      }
+      return v;
+    });
 
   return sources;
 };
