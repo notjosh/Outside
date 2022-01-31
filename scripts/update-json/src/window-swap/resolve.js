@@ -5,7 +5,7 @@ import _ from 'lodash';
 const log = console.log;
 // const log = () => {};
 
-const uniq = (list) => _.uniqBy(list, 'url');
+const uniq = (list) => _.uniqBy(list, 'url1');
 
 /** @typedef {import("./index").Video} Video */
 
@@ -52,8 +52,9 @@ const findVideoSectionsInModule = (body) => {
                   continue;
                 }
                 const hasProperties =
-                  hasProperty(element.properties, 'url') &&
-                  hasProperty(element.properties, 'location') &&
+                  hasProperty(element.properties, 'url1') &&
+                  hasProperty(element.properties, 'url2') &&
+                  hasProperty(element.properties, 'citylocation') &&
                   hasProperty(element.properties, 'author');
                 looksOkay = looksOkay || hasProperties;
               }
@@ -178,8 +179,9 @@ const extractFrom = (source) => {
         // we've only found that we have _some_ valid videos, so let's filter out anything that looks actually invalid
         const valid = list.filter(
           (video) =>
-            typeof video.url === 'string' &&
-            typeof video.location === 'string' &&
+            typeof video.url1 === 'string' &&
+            typeof video.url2 === 'string' &&
+            typeof video.citylocation === 'string' &&
             typeof video.author === 'string'
         );
 
@@ -188,7 +190,7 @@ const extractFrom = (source) => {
 
       if (valids.length === 1) {
         log(`returning video count: ${valids[0].length}`);
-        return _.sortBy(valids[0], 'url');
+        return _.sortBy(valids[0], 'url1');
       } else if (valids.length > 1) {
         // there's a difference between arrays where "logged in" vs "logged out",
         // but it doesn't seem like it's actually being used yet. I think it's just
@@ -199,7 +201,7 @@ const extractFrom = (source) => {
         const joined = uniq([].concat.apply([], valids));
         log(`returning merged video count: ${joined.length}`);
 
-        return _.sortBy(joined, 'url');
+        return _.sortBy(joined, 'url1');
       }
     } else {
       log('no match found in module: ' + module.key);
@@ -226,12 +228,23 @@ const resolve = (source) => {
       ...v,
     }))
     .map((v) => {
+      if (v.citylocation != null) {
+        v.location = v.citylocation;
+        delete v.citylocation;
+      }
+
       if (v.url1 != null) {
-        v.params = {
-          h: v.url1,
-        };
+        v.url = v.url1;
         delete v.url1;
       }
+
+      if (v.url2 != null) {
+        v.params = {
+          h: v.url2,
+        };
+        delete v.url2;
+      }
+
       return v;
     });
 
