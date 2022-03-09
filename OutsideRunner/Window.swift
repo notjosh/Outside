@@ -1,18 +1,15 @@
 import Cocoa
 
-enum KeyCode: UInt16 {
-    case space = 0x31
-}
-
 class Window: NSWindow {
-    var keyHandler: ((KeyCode) -> Void)?
+    var keyHandler: ((UInt16) -> Bool)?
 
     var screenSaverView: ScreenSaverInterface?
 
     override func keyDown(with event: NSEvent) {
-        if let keyCode = KeyCode(rawValue: event.keyCode) {
-            keyHandler?(keyCode)
-            return
+        if let keyHandler = keyHandler {
+            if keyHandler(event.keyCode) {
+                return
+            }
         }
 
         super.keyDown(with: event)

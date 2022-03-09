@@ -7,6 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFrame:(NSRect)frame isPreview:(BOOL)isPreview;
 
 - (void)next;
+- (void)moveMetadata;
 
 - (void)startAnimation;
 - (void)stopAnimation;

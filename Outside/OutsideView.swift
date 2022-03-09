@@ -4,6 +4,13 @@ import ScreenSaver
 
 let metadataTimeout: TimeInterval = 5
 
+enum Corner: CaseIterable {
+    case topLeading
+    case topTrailing
+    case bottomLeading
+    case bottomTrailing
+}
+
 class OutsideView: ScreenSaverView, ScreenSaverInterface {
     lazy var configurationController = ConfigurationController()
 
@@ -19,14 +26,15 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
     let metadataTextField: NSTextField
     let progressIndicator: NSProgressIndicator
 
-    var metadataVisibleTimer: Timer?
     var metadata: (PlaybackItem, VimeoConfigurationVideo)?
+
+    var metadataConstraints: [NSLayoutConstraint] = []
+    var metadataCorner: Corner = .bottomLeading
+
+    var hasPlayedAtLeastOnce = false
 
     deinit {
         playerLayer.removeObserver(self, forKeyPath: "readyForDisplay")
-
-        metadataVisibleTimer?.invalidate()
-        metadataVisibleTimer = nil
     }
     
     required override init(frame: NSRect, isPreview: Bool) {
@@ -89,15 +97,7 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         progressIndicator.appearance = NSAppearance(named: .vibrantLight)
         progressIndicator.style = .spinning
 
-        NSLayoutConstraint.activate([
-            progressIndicator.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
-            metadataContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
-
-            metadataContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            metadataContainer.trailingAnchor.constraint(lessThanOrEqualTo: progressIndicator.leadingAnchor, constant: -20),
-            progressIndicator.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-
-        ])
+        positionMetadata(at: metadataCorner)
 
         NSLayoutConstraint.activate([
             metadataTextField.bottomAnchor.constraint(equalTo: metadataContainer.bottomAnchor, constant: -8),
@@ -175,15 +175,6 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         fade.calculationMode = .linear
         fade.delegate = self
         playerLayer.add(fade, forKey: "fade")
-
-        metadataVisibleTimer?.invalidate()
-        metadataVisibleTimer = Timer.scheduledTimer(withTimeInterval: metadataTimeout, repeats: false) { [weak self] timer in
-            NSAnimationContext.runAnimationGroup { context in
-                context.duration = 0.3
-                context.allowsImplicitAnimation = true
-                self?.metadataContainer.alphaValue = 0
-            }
-        }
     }
 
     private func run() {
@@ -213,6 +204,59 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         }
     }
 
+    func moveMetadata() {
+        metadataCorner = metadataCorner.next
+
+        positionMetadata(at: metadataCorner)
+    }
+
+    func positionMetadata(at corner: Corner) {
+        let Padding: CGFloat = 20
+
+        NSLayoutConstraint.deactivate(metadataConstraints)
+
+        switch corner {
+        case .bottomLeading:
+            metadataConstraints = [
+                progressIndicator.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Padding),
+                metadataContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Padding),
+
+                metadataContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Padding),
+                metadataContainer.trailingAnchor.constraint(lessThanOrEqualTo: progressIndicator.leadingAnchor, constant: -Padding),
+                progressIndicator.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Padding),
+            ]
+        case .bottomTrailing:
+            metadataConstraints = [
+                progressIndicator.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Padding),
+                metadataContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Padding),
+
+                progressIndicator.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Padding),
+                progressIndicator.trailingAnchor.constraint(lessThanOrEqualTo: metadataContainer.leadingAnchor, constant: -Padding),
+                metadataContainer.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Padding),
+            ]
+        case .topLeading:
+            metadataConstraints = [
+                progressIndicator.topAnchor.constraint(equalTo: topAnchor, constant: Padding),
+                metadataContainer.topAnchor.constraint(equalTo: topAnchor, constant: Padding),
+
+                metadataContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Padding),
+                metadataContainer.trailingAnchor.constraint(lessThanOrEqualTo: progressIndicator.leadingAnchor, constant: -Padding),
+                progressIndicator.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Padding),
+            ]
+        case .topTrailing:
+            metadataConstraints = [
+                progressIndicator.topAnchor.constraint(equalTo: topAnchor, constant: Padding),
+                metadataContainer.topAnchor.constraint(equalTo: topAnchor, constant: Padding),
+
+                progressIndicator.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Padding),
+                progressIndicator.trailingAnchor.constraint(lessThanOrEqualTo: metadataContainer.leadingAnchor, constant: -Padding),
+                metadataContainer.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Padding),
+            ]
+        }
+
+        NSLayoutConstraint.activate(metadataConstraints)
+    }
+
     func next() {
         guard
             let item = playlist?.next(randomised: preferences.randomisePlayback)
@@ -229,6 +273,10 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         playerLayer.removeAllAnimations()
         playerLayer.isHidden = true
         playerLayer.opacity = 0
+
+        if hasPlayedAtLeastOnce {
+            moveMetadata()
+        }
 
         vimeo.fetchPlaybackURL(of: item.vimeoId, params: item.params, maximumHeight: preferences.highestQuality.rawValue) { [weak self] result in
             guard let self = self else {
@@ -284,11 +332,13 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
 
         metadataTextField.attributedStringValue = metadata
         metadataContainer.isHidden = false
-        metadataContainer.alphaValue = 1
+        metadataContainer.alphaValue = 0.8
 
         player.replaceCurrentItem(with: playerItem)
         player.actionAtItemEnd = .none
         player.play()
+
+        hasPlayedAtLeastOnce = true
 
         playerLayer.isHidden = false
     }
@@ -324,5 +374,14 @@ extension OutsideView: CAAnimationDelegate {
         player.pause()
         next()
         print("animation ended, jumping to next", anim, flag)
+    }
+}
+
+extension CaseIterable where Self: Equatable {
+    private var allCases: AllCases { Self.allCases }
+    var next: Self {
+        let index = allCases.index(after: allCases.firstIndex(of: self)!)
+        guard index != allCases.endIndex else { return allCases.first! }
+        return allCases[index]
     }
 }

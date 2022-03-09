@@ -1,12 +1,7 @@
 import Cocoa
 
 import ObjectiveC
-
-@objc
-protocol Foo {
-    func `init`(frame: NSRect, isPreview: Bool)
-    func bar(baz: String)
-}
+import Carbon.HIToolbox.Events
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -16,9 +11,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         window.keyHandler = { [weak self] code in
-            switch code {
-            case .space:
+            switch Int(code) {
+            case kVK_Space:
                 self?.window.screenSaverView?.next()
+                return true
+            case kVK_ANSI_M:
+                self?.window.screenSaverView?.moveMetadata()
+                return true
+            default:
+                return false
             }
         }
 
