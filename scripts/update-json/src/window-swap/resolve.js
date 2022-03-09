@@ -54,7 +54,7 @@ const findVideoSectionsInModule = (body) => {
                 const hasProperties =
                   hasProperty(element.properties, 'url1') &&
                   hasProperty(element.properties, 'url2') &&
-                  hasProperty(element.properties, 'citylocation') &&
+                  hasProperty(element.properties, 'cityLocation') &&
                   hasProperty(element.properties, 'author');
                 looksOkay = looksOkay || hasProperties;
               }
@@ -181,7 +181,7 @@ const extractFrom = (source) => {
           (video) =>
             typeof video.url1 === 'string' &&
             typeof video.url2 === 'string' &&
-            typeof video.citylocation === 'string' &&
+            typeof video.cityLocation === 'string' &&
             typeof video.author === 'string'
         );
 
@@ -228,9 +228,9 @@ const resolve = (source) => {
       ...v,
     }))
     .map((v) => {
-      if (v.citylocation != null) {
-        v.location = v.citylocation;
-        delete v.citylocation;
+      if (v.cityLocation != null) {
+        v.location = v.cityLocation;
+        delete v.cityLocation;
       }
 
       if (v.url1 != null) {
