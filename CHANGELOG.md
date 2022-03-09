@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Build with Apple silicon support
+
+### Changed
+
+- Metadata window stays visible constantly, but changes position at the start of a new video
+
 ## [v0.2.0] - 2021-10-30
 
 ### Added
