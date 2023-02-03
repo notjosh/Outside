@@ -17,12 +17,40 @@ const run = async (outputPath) => {
 
     console.log(`found ${videos.length} videos`);
 
+    const validVideos = await filterValid(videos);
+
     const out = {
       timestamp: new Date().toISOString(),
-      videos: await filterValid(videos),
+      videos: validVideos.sort((lhs, rhs) => lhs.id - rhs.id),
     };
 
-    await fs.writeFile(outputPath, JSON.stringify(out, null, 2));
+    // sort object keys for nicer diffs
+    const replacer = (key, value) =>
+      value instanceof Object && !(value instanceof Array)
+        ? Object.keys(value)
+            .sort((lhs, rhs) => lhs.localeCompare(rhs))
+            .reduce(
+              (sorted, key) => {
+                sorted[key] = value[key];
+                return sorted;
+              },
+              {
+                // ID always first
+                id: value.id,
+
+                // known keys from our code come next
+                author: value.author,
+                location: value.location,
+                params: value.params,
+                service: value.service,
+                url: value.url,
+              }
+            )
+        : value;
+
+    const string = JSON.stringify(out, replacer, 2);
+
+    await fs.writeFile(outputPath, string);
 
     console.log(`exported videos to: ${outputPath}`);
   } catch (e) {

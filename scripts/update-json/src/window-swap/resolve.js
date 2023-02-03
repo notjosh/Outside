@@ -212,6 +212,33 @@ const extractFrom = (source) => {
   return [];
 };
 
+const isValidInt32 = (number) => {
+  return (
+    Number.isInteger(number) && number > -2147483648 && number < 2147483647
+  );
+};
+
+/**
+ * @param {Video} video
+ * @param {number} defaultValue
+ * @returns {number}
+ */
+const makeSuitableId = (video, defaultValue) => {
+  // video.url1 is a string, but it's actually a number, so we need to parse it
+  // (ideally this would just work as a string, but I made some Bad Decisions at some point)
+  const number = parseInt(video.url1, 10);
+
+  // our Swift code expects an Int32, so we need to make sure that we're not overflowing
+  if (isValidInt32(number)) {
+    if (number >= 10000) {
+      // vimeo IDs are pretty large, so this should be sufficient
+      return number;
+    }
+  }
+
+  return defaultValue;
+};
+
 /**
  * @param {string} source
  * @returns {Video[]|null}
@@ -223,7 +250,7 @@ const resolve = (source) => {
 
   const sources = extractFrom(source)
     .map((v, idx) => ({
-      id: idx,
+      id: makeSuitableId(v, idx),
       service: 'vimeo',
       ...v,
     }))
