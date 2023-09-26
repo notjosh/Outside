@@ -5,13 +5,12 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "acorn": "^8.2.2",
-    "cheerio": "^1.0.0-rc.6",
-    "estraverse": "^5.2.0",
+    "acorn": "^8.10.0",
+    "cheerio": "^1.0.0-rc.12",
+    "estraverse": "^5.3.0",
     "lodash": "^4.17.21",
-    "module-from-string": "^2.2.2",
-    "node-fetch": "^2.6.1",
-    "node-fetch-retry": "^1.1.1",
-    "tiny-async-pool": "^1.2.0"
+    "node-fetch": "^3.3.2",
+    "node-fetch-retry": "^2.0.1",
+    "tiny-async-pool": "^2.1.0"
   }
 }

@@ -21,9 +21,13 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
  * @returns {Promise<Video[]>}
  */
 const filter = async (array, predicate) => {
-  const results = await asyncPool(CONCURRENCY, array, async (arg) =>
+  const results = [];
+
+  for await (const result of await asyncPool(CONCURRENCY, array, async (arg) =>
     (await predicate(arg)) == null ? null : arg
-  );
+  )) {
+    results.push(result);
+  }
 
   return results.filter((value) => value != null);
 };
