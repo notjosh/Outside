@@ -307,6 +307,12 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
 
     private func play(item: PlaybackItem, url: URL) {
         let playerItem = AVPlayerItem(url: url)
+        playerItem.preferredMaximumResolution = StreamingQuality.q4k.size
+
+        // limit streaming when tethering...
+        if #available(macOS 12.0, *) {
+            playerItem.preferredMaximumResolutionForExpensiveNetworks = StreamingQuality.q480p.size
+        }
 
         let shadow = NSShadow()
         shadow.shadowBlurRadius = 0

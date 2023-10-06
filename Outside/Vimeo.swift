@@ -22,6 +22,17 @@ struct VimeoConfigurationVideo: Decodable {
     }
 }
 
+struct VimeoConfigurationCdn: Decodable {
+    let origin: String
+    let url: URL
+}
+
+struct VimeoConfigurationHls: Decodable {
+    let default_cdn: String
+    let separate_av: Bool
+    let cdns: [String: VimeoConfigurationCdn]
+}
+
 struct VimeoConfigurationProgressiveFile: Decodable {
     let width: Int
     let height: Int
@@ -32,6 +43,7 @@ struct VimeoConfigurationProgressiveFile: Decodable {
 }
 
 struct VimeoConfigurationFiles: Decodable {
+    let hls: VimeoConfigurationHls
     let progressive: [VimeoConfigurationProgressiveFile]
 }
 
@@ -71,17 +83,30 @@ class Vimeo {
             case .failure(let error):
                 return callback(.failure(error))
             case .success(let object):
-                print("found: \(object.video.title) (\(object.video.durationHumanReadable))")
+                print("found config for: \(object.video.title) (\(object.video.durationHumanReadable))")
+
+                print("trying HLS...")
+                let hls = object.request.files.hls
+                let defaultCdn = hls.default_cdn
+
+                if let cdn = hls.cdns[defaultCdn] {
+                    print("found HLS config for CDN: \(defaultCdn)")
+
+                    return callback(.success((cdn.url, object.video)))
+                }
+
+                print("trying direct video...")
                 let candidates = object.request.files.progressive
                     .sorted(by: { $0.height > $1.height })
                     .filter { $0.height <= maximumHeight }
                     .map { $0.url }
 
-                guard let url = candidates.first else {
-                    return callback(.failure(VimeoError.noSuitableSizeFound))
+                if let url = candidates.first {
+                    print("found direct video at desired size")
+                    return callback(.success((url, object.video)))
                 }
 
-                return callback(.success((url, object.video)))
+                return callback(.failure(VimeoError.noSuitableSizeFound))
             }
         }
     }

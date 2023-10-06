@@ -29,6 +29,14 @@ enum StreamingQuality: Int, Codable, CaseIterable {
         case .q4k: return "4k"
         }
     }
+
+    var size: CGSize {
+        switch self {
+        case .q480p: return CGSize(width: 640, height: 480)
+        case .q1080p: return CGSize(width: 1920, height: 1080)
+        case .q4k: return CGSize(width: 3840, height: 2160)
+        }
+    }
 }
 
 // via https://github.com/glouel/ScreenSaverMinimal/
