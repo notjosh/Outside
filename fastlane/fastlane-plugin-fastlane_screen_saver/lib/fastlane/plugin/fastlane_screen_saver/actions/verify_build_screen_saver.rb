@@ -1,4 +1,4 @@
-require "plist"
+require 'plist'
 
 module Fastlane
   module Actions
@@ -18,7 +18,7 @@ module Fastlane
       end
 
       def self.app_path(params, dir)
-        build_path = params[:ipa_path] || params[:build_path] || Actions.lane_context[SharedValues::IPA_OUTPUT_PATH] || ""
+        build_path = params[:ipa_path] || params[:build_path] || Actions.lane_context[SharedValues::IPA_OUTPUT_PATH] || ''
         UI.user_error!("Unable to find file '#{build_path}'") unless File.exist?(build_path)
         build_path = File.expand_path(build_path)
 
@@ -27,7 +27,7 @@ module Fastlane
           `unzip #{build_path.shellescape} -d #{dir.shellescape} -x '__MACOSX/*' '*.DS_Store'`
           UI.user_error!("Unable to unzip ipa") unless $? == 0
           # Adding extra ** for edge-case ipas where Payload directory is nested.
-          app_path = Dir["#{dir}/**/Payload/*.app"].first
+          app_path = Dir["#{dir}/**/Payload/*.saver"].first
         when ".xcarchive"
           app_path = Dir["#{build_path}/Products/**/*.saver"].first
         else
@@ -47,22 +47,22 @@ module Fastlane
         parts = cert_info.strip.split(/\r?\n/)
         parts.each do |part|
           if part =~ /\AAuthority=(iPhone|iOS|Apple)\s(Distribution|Development)/
-            type = part.split("=")[1].split(":")[0]
-            values["provisioning_type"] = type.downcase =~ /distribution/i ? "distribution" : "development"
+            type = part.split('=')[1].split(':')[0]
+            values['provisioning_type'] = type.downcase =~ /distribution/i ? "distribution" : "development"
           elsif part =~ /\AAuthority=3rd Party Mac Developer Application/
-            values["provisioning_type"] = "3rd_party"
+            values['provisioning_type'] = "3rd_party"
           elsif part =~ /\AAuthority=Developer\sID/
-            values["provisioning_type"] = "developer_id"
+            values['provisioning_type'] = "developer_id"
           end
           if part.start_with?("Authority")
-            values["authority"] ||= []
-            values["authority"] << part.split("=")[1]
+            values['authority'] ||= []
+            values['authority'] << part.split('=')[1]
           end
           if part.start_with?("TeamIdentifier")
-            values["team_identifier"] = part.split("=")[1]
+            values['team_identifier'] = part.split('=')[1]
           end
           if part.start_with?("Identifier")
-            values["bundle_identifier"] = part.split("=")[1]
+            values['bundle_identifier'] = part.split('=')[1]
           end
         end
 
@@ -75,43 +75,43 @@ module Fastlane
 
         # plist = Plist.parse_xml(profile)
 
-        # values["app_name"] = plist["AppIDName"]
-        # values["provisioning_uuid"] = plist["UUID"]
-        # values["team_name"] = plist["TeamName"]
-        # values["team_identifier"] = plist["TeamIdentifier"].first
+        # values['app_name'] = plist['AppIDName']
+        # values['provisioning_uuid'] = plist['UUID']
+        # values['team_name'] = plist['TeamName']
+        # values['team_identifier'] = plist['TeamIdentifier'].first
 
-        # application_identifier_prefix = plist["ApplicationIdentifierPrefix"][0]
-        # full_bundle_identifier = "#{application_identifier_prefix}.#{values["bundle_identifier"]}"
+        # application_identifier_prefix = plist['ApplicationIdentifierPrefix'][0]
+        # full_bundle_identifier = "#{application_identifier_prefix}.#{values['bundle_identifier']}"
 
-        # UI.user_error!("Inconsistent identifier found; #{plist["Entitlements"]["application-identifier"]}, found in the embedded.mobileprovision file, should match #{full_bundle_identifier}, which is embedded in the codesign identity") unless plist["Entitlements"]["application-identifier"] == full_bundle_identifier
-        # UI.user_error!("Inconsistent identifier found") unless plist["Entitlements"]["com.apple.developer.team-identifier"] == values["team_identifier"]
+        # UI.user_error!("Inconsistent identifier found; #{plist['Entitlements']['application-identifier']}, found in the embedded.mobileprovision file, should match #{full_bundle_identifier}, which is embedded in the codesign identity") unless plist['Entitlements']['application-identifier'] == full_bundle_identifier
+        # UI.user_error!("Inconsistent identifier found") unless plist['Entitlements']['com.apple.developer.team-identifier'] == values['team_identifier']
 
         values
       end
 
       def self.print_values(values)
         FastlaneCore::PrintTable.print_values(config: values,
-                                              title: "Summary for verify_build #{Fastlane::VERSION}")
+                                             title: "Summary for verify_build #{Fastlane::VERSION}")
       end
 
       def self.evaulate(params, values)
         if params[:provisioning_type]
-          UI.user_error!("Mismatched provisioning_type. Required: '#{params[:provisioning_type]}'; Found: '#{values["provisioning_type"]}'") unless params[:provisioning_type] == values["provisioning_type"]
+          UI.user_error!("Mismatched provisioning_type. Required: '#{params[:provisioning_type]}'; Found: '#{values['provisioning_type']}'") unless params[:provisioning_type] == values['provisioning_type']
         end
         if params[:provisioning_uuid]
-          UI.user_error!("Mismatched provisioning_uuid. Required: '#{params[:provisioning_uuid]}'; Found: '#{values["provisioning_uuid"]}'") unless params[:provisioning_uuid] == values["provisioning_uuid"]
+          UI.user_error!("Mismatched provisioning_uuid. Required: '#{params[:provisioning_uuid]}'; Found: '#{values['provisioning_uuid']}'") unless params[:provisioning_uuid] == values['provisioning_uuid']
         end
         if params[:team_identifier]
-          UI.user_error!("Mismatched team_identifier. Required: '#{params[:team_identifier]}'; Found: '#{values["team_identifier"]}'") unless params[:team_identifier] == values["team_identifier"]
+          UI.user_error!("Mismatched team_identifier. Required: '#{params[:team_identifier]}'; Found: '#{values['team_identifier']}'") unless params[:team_identifier] == values['team_identifier']
         end
         if params[:team_name]
-          UI.user_error!("Mismatched team_name. Required: '#{params[:team_name]}'; Found: 'values['team_name']'") unless params[:team_name] == values["team_name"]
+          UI.user_error!("Mismatched team_name. Required: '#{params[:team_name]}'; Found: '#{values['team_name']}'") unless params[:team_name] == values['team_name']
         end
         if params[:app_name]
-          UI.user_error!("Mismatched app_name. Required: '#{params[:app_name]}'; Found: '#{values["app_name"]}'") unless params[:app_name] == values["app_name"]
+          UI.user_error!("Mismatched app_name. Required: '#{params[:app_name]}'; Found: '#{values['app_name']}'") unless params[:app_name] == values['app_name']
         end
         if params[:bundle_identifier]
-          UI.user_error!("Mismatched bundle_identifier. Required: '#{params[:bundle_identifier]}'; Found: '#{values["bundle_identifier"]}'") unless params[:bundle_identifier] == values["bundle_identifier"]
+          UI.user_error!("Mismatched bundle_identifier. Required: '#{params[:bundle_identifier]}'; Found: '#{values['bundle_identifier']}'") unless params[:bundle_identifier] == values['bundle_identifier']
         end
 
         UI.success("Build is verified, have a 🍪.")
@@ -122,11 +122,11 @@ module Fastlane
       #####################################################
 
       def self.description
-        "Able to verify various settings in ipa file"
+        "Able to verify various settings in ipa/saver file"
       end
 
       def self.details
-        "Verifies that the built app was built using the expected build resources. This is relevant for people who build on machines that are used to build apps with different profiles, certificates and/or bundle identifiers to guard against configuration mistakes."
+        "Verifies that the built app/saver was built using the expected build resources. This is relevant for people who build on machines that are used to build apps with different profiles, certificates and/or bundle identifiers to guard against configuration mistakes."
       end
 
       def self.available_options
@@ -168,7 +168,7 @@ module Fastlane
                                        env_name: "FL_VERIFY_BUILD_BUILD_PATH",
                                        description: "Explicitly set the ipa, app or xcarchive path",
                                        conflicting_options: [:ipa_path],
-                                       optional: true),
+                                       optional: true)
         ]
       end
 
@@ -191,7 +191,7 @@ module Fastlane
           'verify_build_screen_saver(
             provisioning_type: "distribution",
             bundle_identifier: "com.example.myapp"
-          )',
+          )'
         ]
       end
 
