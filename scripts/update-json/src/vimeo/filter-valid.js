@@ -37,7 +37,7 @@ const filter = async (array, predicate) => {
  * @returns {Promise<boolean>}
  */
 const isValidVideo = async (video) => {
-  const url = `https://player.vimeo.com/video/${video.url}/config?`;
+  const url = `https://player.vimeo.com/video/${video.id}/config?`;
   const params = new URLSearchParams(video.params);
 
   console.log(`checking: ${url + params}: ${video.author} - ${video.location}`);

@@ -38,7 +38,6 @@ struct VimeoConfigurationProgressiveFile: Decodable {
     let height: Int
     let url: URL
     let quality: String
-//    let id: String // can be number or string, but we're not using either at the moment so can be ignored
     let origin: String
 }
 

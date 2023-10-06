@@ -1,6 +1,6 @@
 import Foundation
 
-let remoteJSONURL = URL(string: "https://raw.githubusercontent.com/notjosh/Outside/main/Outside/videos.json")!
+let remoteJSONURL = URL(string: "https://raw.githubusercontent.com/notjosh/Outside/main/Outside/videos.v2.json")!
 
 class PlaylistManager {
     static var shared: PlaylistManager = {
@@ -17,7 +17,7 @@ class PlaylistManager {
             appropriateFor: nil,
             create: false
         )
-        let fileURL = documentDirectory.appendingPathComponent("videos.json")
+        let fileURL = documentDirectory.appendingPathComponent("videos.v2.json")
         return fileURL
     }
 
@@ -84,11 +84,11 @@ class PlaylistManager {
         guard
             let manifest = Bundle(for: type(of: self)).decode(
                 Manifest.self,
-                from: "videos.json",
+                from: "videos.v2.json",
                 dateDecodingStrategy: .iso8601withFractionalSeconds
             )
         else {
-            fatalError("videos.json is so broken, this is a bad time")
+            fatalError("videos.v2.json is so broken, this is a bad time")
         }
 
         return manifest
@@ -119,7 +119,7 @@ class PlaylistManager {
         ) { (result) in
             switch result {
             case .failure(let error):
-                print("failed to download manifest", error)
+                print("failed to download manifest from \(remoteJSONURL)", error)
                 return completion(nil)
             case .success(let object):
                 print("downloaded manifest")

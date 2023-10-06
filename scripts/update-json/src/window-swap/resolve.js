@@ -1,11 +1,13 @@
 import * as acorn from 'acorn';
 import estraverse from 'estraverse';
-import _ from 'lodash';
+import lodash from 'lodash';
+
+const { sortBy, uniqBy } = lodash;
 
 const log = console.log;
 // const log = () => {};
 
-const uniq = (list) => _.uniqBy(list, 'url1');
+const uniq = (list) => uniqBy(list, 'url1');
 
 /** @typedef {import("./index").Video} Video */
 
@@ -190,7 +192,7 @@ const extractFrom = (source) => {
 
       if (valids.length === 1) {
         log(`returning video count: ${valids[0].length}`);
-        return _.sortBy(valids[0], 'url1');
+        return sortBy(valids[0], 'url1');
       } else if (valids.length > 1) {
         // there's a difference between arrays where "logged in" vs "logged out",
         // but it doesn't seem like it's actually being used yet. I think it's just
@@ -201,7 +203,7 @@ const extractFrom = (source) => {
         const joined = uniq([].concat.apply([], valids));
         log(`returning merged video count: ${joined.length}`);
 
-        return _.sortBy(joined, 'url1');
+        return sortBy(joined, 'url1');
       }
     } else {
       log('no match found in module: ' + module.key);
@@ -219,27 +221,6 @@ const isValidInt32 = (number) => {
 };
 
 /**
- * @param {Video} video
- * @param {number} defaultValue
- * @returns {number}
- */
-const makeSuitableId = (video, defaultValue) => {
-  // video.url1 is a string, but it's actually a number, so we need to parse it
-  // (ideally this would just work as a string, but I made some Bad Decisions at some point)
-  const number = parseInt(video.url1, 10);
-
-  // our Swift code expects an Int32, so we need to make sure that we're not overflowing
-  if (isValidInt32(number)) {
-    if (number >= 10000) {
-      // vimeo IDs are pretty large, so this should be sufficient
-      return number;
-    }
-  }
-
-  return defaultValue;
-};
-
-/**
  * @param {string} source
  * @returns {Video[]|null}
  */
@@ -250,7 +231,8 @@ const resolve = (source) => {
 
   const sources = extractFrom(source)
     .map((v, idx) => ({
-      id: makeSuitableId(v, idx),
+      // default `id` to `idx` so we always have a value, but it _should_ get overwritten by the `url1` later
+      id: idx.toString(),
       service: 'vimeo',
       ...v,
     }))
@@ -261,7 +243,7 @@ const resolve = (source) => {
       }
 
       if (v.url1 != null) {
-        v.url = v.url1;
+        v.id = v.url1;
         delete v.url1;
       }
 

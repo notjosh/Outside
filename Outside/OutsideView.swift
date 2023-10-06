@@ -278,7 +278,7 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
             moveMetadata()
         }
 
-        vimeo.fetchPlaybackURL(of: item.vimeoId, params: item.params, maximumHeight: preferences.highestQuality.rawValue) { [weak self] result in
+        vimeo.fetchPlaybackURL(of: item.id, params: item.params, maximumHeight: preferences.highestQuality.rawValue) { [weak self] result in
             guard let self = self else {
                 return
             }

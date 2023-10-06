@@ -14,8 +14,7 @@ import resolve from './resolve.js';
 
 /**
  * @typedef {Object} Video
- * @property {number} id
- * @property {string} url
+ * @property {string} id
  * @property {string} location
  * @property {string} author
  * @property {string} service

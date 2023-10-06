@@ -21,7 +21,7 @@ const run = async (outputPath) => {
 
     const out = {
       timestamp: new Date().toISOString(),
-      videos: validVideos.sort((lhs, rhs) => lhs.id - rhs.id),
+      videos: validVideos.sort((lhs, rhs) => lhs.id.localeCompare(rhs.id)),
     };
 
     // sort object keys for nicer diffs
@@ -38,12 +38,11 @@ const run = async (outputPath) => {
                 // ID always first
                 id: value.id,
 
-                // known keys from our code come next
+                // known keys from our code at start of object
                 author: value.author,
                 location: value.location,
                 params: value.params,
                 service: value.service,
-                url: value.url,
               }
             )
         : value;
