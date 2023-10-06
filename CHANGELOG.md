@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v1.0.0] - 2023-10-06Z
+
 ### Changed
 
 - Use HTTP Live Streaming by default, instead of accessing videos directly
