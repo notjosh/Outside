@@ -3,7 +3,7 @@ default_platform(:mac)
 platform :mac do
   desc "Build the .saver, notarise, release"
   lane :release do
-    ensure_git_status_clean()
+    ensure_git_status_clean
 
     version = get_version_number(
       target: "Outside",
