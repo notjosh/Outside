@@ -2,17 +2,17 @@
 
 A screensaver for seeing outside, into the Real World™
 
-The file `videos.json` drives the playlist, which can be updated to consume other videos.
+The file `videos.v2.json` drives the playlist, which can be updated to consume other videos.
 
 It's soothing though, so that's neat.
 
 ## Tasks
 
-### Update `videos.json`
+### Update `videos.v2.json`
 
 ```sh
 # first time: cd ./scripts/update-json && yarn
-node ./scripts/update-json/index.js ./Outside/videos.json
+node ./scripts/update-json/index.js ./Outside/videos.v2.json
 ```
 
 ### Release new build

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Use HTTP Live Streaming by default, instead of accessing videos directly
+- Update `videos.json` schema (now: `videos.v2.json`), to clean up some old cruft
+
 ## [v0.3.0] - 2022-03-09Z
 
 ### Added
