@@ -35,6 +35,12 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
 
     deinit {
         playerLayer.removeObserver(self, forKeyPath: "readyForDisplay")
+
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.removeObserver(self)
+
+        let distributedNotificationCenter = DistributedNotificationCenter.default
+        distributedNotificationCenter.removeObserver(self)
     }
     
     required override init(frame: NSRect, isPreview: Bool) {
@@ -179,6 +185,7 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
 
     private func run() {
         let notificationCenter = NotificationCenter.default
+        let distributedNotificationCenter = DistributedNotificationCenter.default
 
         notificationCenter.addObserver(self,
                                        selector: #selector(OutsideView.playerItemDidPlayToEndTime(_:)),
@@ -188,6 +195,15 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
                                        selector: #selector(OutsideView.playerItemFailedToPlayToEndTime(_:)),
                                        name: .AVPlayerItemFailedToPlayToEndTime,
                                        object: nil)
+
+        distributedNotificationCenter.addObserver(self,
+                                                  selector: #selector(OutsideView.handleWillStop(_:)),
+                                                  name: Notification.Name("com.apple.screensaver.willstop"),
+                                                  object: nil)
+
+        NSWorkspace.shared.notificationCenter.addObserver(
+                self, selector: #selector(handleWillSleep(_:)),
+                name: NSWorkspace.willSleepNotification, object: nil)
 
         layer!.contentsScale = window?.backingScaleFactor ?? 1.0
         playerLayer.contentsScale = window?.backingScaleFactor ?? 1.0
@@ -350,6 +366,18 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
     }
 
     @objc
+    func handleWillSleep(_ aNotification: Notification) {
+        sonomaExit()
+    }
+
+    @objc
+    func handleWillStop(_ aNotification: Notification) {
+        player.pause()
+
+        sonomaExit()
+    }
+
+    @objc
     func playerItemDidPlayToEndTime(_ notification: NSNotification) {
         next()
     }
@@ -367,6 +395,14 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
     func hideLoading() {
         progressIndicator.stopAnimation(self)
         progressIndicator.isHidden = true
+    }
+
+    private func sonomaExit() {
+        // sonoma has a bug where the `legacyScreenSaver` will play forever, so we'll kill the process to try to work around it
+        // see: https://github.com/JohnCoates/Aerial/issues/1305
+        if #available(macOS 14.0, *) {
+            exit(0)
+        }
     }
 }
 
