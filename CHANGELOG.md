@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Added a Sonoma-specific handler to kill the screensaver when after hiding. Sonoma will otherwise keep it running, which eats resources needlessly.
+
 ## [v1.0.0] - 2023-10-06Z
 
 ### Changed
