@@ -43,7 +43,7 @@ struct VimeoConfigurationProgressiveFile: Decodable {
 
 struct VimeoConfigurationFiles: Decodable {
     let hls: VimeoConfigurationHls
-    let progressive: [VimeoConfigurationProgressiveFile]
+    let progressive: [VimeoConfigurationProgressiveFile]?
 }
 
 struct VimeoConfigurationRequest: Decodable {
@@ -95,7 +95,7 @@ class Vimeo {
                 }
 
                 print("trying direct video...")
-                let candidates = object.request.files.progressive
+                let candidates = (object.request.files.progressive ?? [])
                     .sorted(by: { $0.height > $1.height })
                     .filter { $0.height <= maximumHeight }
                     .map { $0.url }
