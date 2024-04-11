@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
 import asyncPool from 'tiny-async-pool';
 
-const INTERVAL = 0;
-const CONCURRENCY = 5;
+const INTERVAL = 100;
+const CONCURRENCY = 4;
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -37,23 +37,25 @@ const filter = async (array, predicate) => {
  * @returns {Promise<boolean>}
  */
 const isValidVideo = async (video) => {
-  const url = `https://player.vimeo.com/video/${video.id}/config?`;
+  const url = `https://player.vimeo.com/video/${video.id}?`;
   const params = new URLSearchParams(video.params);
+  const playerUrl = url + params;
+  const oembedUrl = `https://vimeo.com/api/oembed.json?url=${playerUrl}`;
 
-  console.log(`checking: ${url + params}: ${video.author} - ${video.location}`);
+  console.log(`checking: ${playerUrl}: ${video.author} - ${video.location}`);
 
   let ok = false;
   let status = '<unknown>';
 
   try {
-    const response = await fetch(url + params);
+    const response = await fetch(oembedUrl);
     ok = response.ok;
     status = `${response.status} ${response.statusText}`;
   } catch (error) {
     console.log(error);
   }
 
-  console.log(`...${url + params}: ${ok ? '✅' : '❌'} ${status}`);
+  console.log(`...${playerUrl}: ${ok ? '✅' : '❌'} ${status}`);
 
   // don't spam the endpoint
   await sleep(INTERVAL);
