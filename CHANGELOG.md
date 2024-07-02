@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.0.0] - 2024-07-02Z
+
 ### Fixed
 
 - Changed method to find stream URLs
