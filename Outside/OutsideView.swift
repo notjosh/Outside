@@ -211,7 +211,9 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
         playerLayer.addObserver(self, forKeyPath: "readyForDisplay", options: .new, context: nil)
 
         showLoading()
-        playlistManager.load { [weak self] playlist in
+
+        Task { [weak self] in
+            let playlist = await self?.playlistManager.load()
             self?.playlist = playlist
 
             DispatchQueue.main.async {
@@ -294,18 +296,19 @@ class OutsideView: ScreenSaverView, ScreenSaverInterface {
             moveMetadata()
         }
 
-        vimeo.fetchPlaybackURL(of: item.id, params: item.params, maximumHeight: preferences.highestQuality.rawValue) { [weak self] result in
+        Task { [weak self] in
             guard let self = self else {
                 return
             }
 
-            switch result {
-            case .success(let metadata):
+            do {
+                let metadata = try await vimeo.fetchPlaybackURL(of: item.id, params: item.params, maximumHeight: preferences.highestQuality.rawValue)
+
                 DispatchQueue.main.async {
                     self.metadata = (item, metadata.1)
                     self.play(item: item, url: metadata.0)
                 }
-            case .failure(let error):
+            } catch {
                 let error = error as NSError
 
                 if error.code == -999 {

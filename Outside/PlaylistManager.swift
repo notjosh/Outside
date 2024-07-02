@@ -7,7 +7,7 @@ class PlaylistManager {
         return PlaylistManager()
     }()
 
-    private var task: URLSessionDataTask?
+    private var task: Task<Manifest?, Never>?
     private let fileManager = FileManager.default
 
     private var cachedFileURL: URL {
@@ -21,48 +21,44 @@ class PlaylistManager {
         return fileURL
     }
 
-    func load(completion: @escaping (Playlist) -> Void) {
-        loadManifest { manifest in
-            completion(Playlist(items: manifest.videos))
-        }
+    func load() async -> Playlist {
+        let manifest = await loadManifest()
+
+        return Playlist(items: manifest.videos)
     }
 
     func clearCache() {
         try? fileManager.removeItem(at: cachedFileURL)
     }
 
-    private func loadManifest(completion: @escaping (Manifest) -> Void) {
-        downloadLatestManifest { [weak self] downloaded in
-            guard let self = self else {
-                return
-            }
+    private func loadManifest() async -> Manifest {
+        let downloaded = await downloadLatestManifest()
 
-            let cached = self.loadFromCache()
-            let resources = self.loadFromResources()
+        let cached = loadFromCache()
+        let resources = loadFromResources()
 
-            let local: Manifest
+        let local: Manifest
 
-            if let cached = cached,
-               cached.timestamp > resources.timestamp {
-//                print("local = cached (timestamp: \(cached.timestamp))")
-                local = cached
-            } else {
-//                print("local = cached (timestamp: \(resources.timestamp))")
-                local = resources
-            }
-
-            if
-                let downloaded = downloaded,
-                downloaded.timestamp > local.timestamp
-            {
-//                print("using downloaded (timestamp: \(downloaded.timestamp))")
-                self.save(manifest: downloaded)
-                return completion(downloaded)
-            }
-
-//            print("using local")
-            return completion(local)
+        if let cached = cached,
+           cached.timestamp > resources.timestamp {
+            print("local = cached (timestamp: \(cached.timestamp))")
+            local = cached
+        } else {
+            print("local = resources (timestamp: \(resources.timestamp))")
+            local = resources
         }
+
+        if
+            let downloaded = downloaded,
+            downloaded.timestamp > local.timestamp
+        {
+            print("using downloaded (timestamp: \(downloaded.timestamp))")
+            self.save(manifest: downloaded)
+            return downloaded
+        }
+
+        print("using local")
+        return local
     }
 
     private func loadFromCache() -> Manifest? {
@@ -104,27 +100,28 @@ class PlaylistManager {
         try? data.write(to: cachedFileURL)
     }
 
-    private func downloadLatestManifest(completion: @escaping (Manifest?) -> Void) {
-        let request = URLRequest(url: remoteJSONURL)
-
-        if let task = task, task.state == .running {
+    private func downloadLatestManifest() async -> Manifest? {
+        if let task = task {
             task.cancel()
             self.task = nil
         }
 
-        task = URLSession.shared.perform(
-            request,
-            decode: Manifest.self,
-            dateDecodingStrategy: .iso8601withFractionalSeconds
-        ) { (result) in
-            switch result {
-            case .failure(let error):
-                print("failed to download manifest from \(remoteJSONURL)", error)
-                return completion(nil)
-            case .success(let object):
+        let task = Task<Manifest?, Never> {
+            let request = URLRequest(url: remoteJSONURL)
+
+            do {
+                let object = try await URLSession.shared.perform(request, decode: Manifest.self, dateDecodingStrategy: .iso8601withFractionalSeconds)
+
                 print("downloaded manifest")
-                return completion(object)
+                return object
+            } catch {
+                print("failed to download manifest from \(remoteJSONURL)", error)
+                return nil
             }
         }
+
+        self.task = task
+
+        return await task.value
     }
 }

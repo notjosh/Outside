@@ -9,40 +9,14 @@ extension URLSession {
         _ request: URLRequest,
         decode decodable: T.Type,
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = .deferredToDate,
-        keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys,
-        result: @escaping (Result<T, Error>) -> Void
-    ) -> URLSessionDataTask {
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                result(.failure(error))
-                return
-            }
+        keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
+    ) async throws -> T {
+        let (data, _) = try await URLSession.shared.data(for: request)
 
-            // handle error scenarios... `result(.failure(error))`
-            // handle bad response... `result(.failure(responseError))`
-            // handle no data... `result(.failure(dataError))`
-
-            guard let data = data else {
-                result(.failure(URLSessionError.dataError))
-                return
-            }
-            
-            if
-                let object = T(
-                    json: data,
-                    dateDecodingStrategy: dateDecodingStrategy,
-                    keyDecodingStrategy: keyDecodingStrategy
-                )
-            {
-                result(.success(object))
-            } else {
-                result(.failure(URLSessionError.dataError))
-                return
-            }
+        guard let object = T(json: data, dateDecodingStrategy: dateDecodingStrategy, keyDecodingStrategy: keyDecodingStrategy) else {
+            throw URLSessionError.dataError
         }
 
-        task.resume()
-
-        return task
+        return object
     }
 }

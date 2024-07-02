@@ -61,7 +61,7 @@ enum VimeoError: Error {
 }
 
 class Vimeo {
-    var task: URLSessionDataTask?
+    var task: Task<(URL, VimeoConfigurationVideo), Error>?
 
     lazy var vimeoURLSession: URLSession = {
         let configuration = URLSessionConfiguration.default
@@ -72,53 +72,47 @@ class Vimeo {
     }()
 
     func fetchPlaybackURL(
-        of id: String, params: [String: String], maximumHeight: Int = 1080,
-        callback: @escaping (Result<(URL, VimeoConfigurationVideo), Error>) ->
-            Void
-    ) {
-        let configURL = "https://player.vimeo.com/video/\(id)"
-
-        var urlComponents = URLComponents(string: configURL)!
-        urlComponents.queryItems = params.map { key, value in
-            URLQueryItem(name: key, value: value)
-        }
-
-        var request = URLRequest(url: urlComponents.url!)
-
-        // making us look like a browser with DNT seems to help avoid some cloudflare nonsense, so...try that
-        request.setValue(
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:128.0) Gecko/20100101 Firefox/128.0",
-            forHTTPHeaderField: "User-Agent")
-        request.setValue("1", forHTTPHeaderField: "DNT")
-
-        if let task = task, task.state == .running {
+        of id: String, params: [String: String], maximumHeight: Int = 1080
+    ) async throws -> (URL, VimeoConfigurationVideo) {
+        if let task = task {
             task.cancel()
             self.task = nil
         }
 
-        task = vimeoURLSession.dataTask(with: request) { (data, _, error) in
-            if let error = error {
-                return callback(.failure(error))
+        let task = Task {
+            let configURL = "https://player.vimeo.com/video/\(id)"
+
+            var urlComponents = URLComponents(string: configURL)!
+            urlComponents.queryItems = params.map { key, value in
+                URLQueryItem(name: key, value: value)
             }
 
-            guard let data = data,
+            var request = URLRequest(url: urlComponents.url!)
 
-                  // read `data` as string, so we can parse the HTML
-                  let html = String(data: data, encoding: .utf8),
+            // making us look like a browser with DNT seems to help avoid some cloudflare nonsense, so...try that
+            request.setValue(
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:128.0) Gecko/20100101 Firefox/128.0",
+                forHTTPHeaderField: "User-Agent")
+            request.setValue("1", forHTTPHeaderField: "DNT")
+            let (data, _) = try await vimeoURLSession.data(for: request)
 
-                  // extract the JSON from the HTML
-                  let json = VimeoConfigExtractor(html: html).json,
+            guard
+                // read `data` as string, so we can parse the HTML
+                let html = String(data: data, encoding: .utf8),
 
-                  // convert back to `Data` for `Codable` to do its thing
-                  let jsonData = json.data(using: .utf8),
+                // extract the JSON from the HTML
+                let json = VimeoConfigExtractor(html: html).json,
 
-                  // make the model object, probably with junk HTML at the end of the JSON string (...so do it lenient!)
-                  let object = VimeoConfiguration(
-                      json: jsonData,
-                      decoder: LenientJSONDecoder()
-                  )
+                // convert back to `Data` for `Codable` to do its thing
+                let jsonData = json.data(using: .utf8),
+
+                // make the model object, probably with junk HTML at the end of the JSON string (...so do it lenient!)
+                let object = VimeoConfiguration(
+                    json: jsonData,
+                    decoder: LenientJSONDecoder()
+                )
             else {
-                return callback(.failure(URLSessionError.dataError))
+                throw URLSessionError.dataError
             }
 
             print(
@@ -132,7 +126,7 @@ class Vimeo {
             if let cdn = hls.cdns[defaultCdn] {
                 print("found HLS config for CDN: \(defaultCdn)")
 
-                return callback(.success((cdn.url, object.video)))
+                return (cdn.url, object.video)
             }
 
             print("trying direct video...")
@@ -143,12 +137,14 @@ class Vimeo {
 
             if let url = candidates.first {
                 print("found direct video at desired size")
-                return callback(.success((url, object.video)))
+                return (url, object.video)
             }
 
-            return callback(.failure(VimeoError.noSuitableSizeFound))
+            throw VimeoError.noSuitableSizeFound
         }
 
-        task?.resume()
+        self.task = task
+
+        return try await task.value
     }
 }
