@@ -1,7 +1,5 @@
 import Foundation
 
-import Foundation
-
 extension Decodable {
     public init?(
         json data: Data,
@@ -9,9 +7,17 @@ extension Decodable {
         keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
     ) {
         let decoder = JSONDecoder()
+
         decoder.dateDecodingStrategy = dateDecodingStrategy
         decoder.keyDecodingStrategy = keyDecodingStrategy
 
+        self.init(json: data, decoder: decoder)
+    }
+
+    public init?(
+        json data: Data,
+        decoder: JSONDecoder = JSONDecoder()
+    ) {
         do {
             self = try decoder.decode(Self.self, from: data)
         } catch DecodingError.keyNotFound(let key, let context) {

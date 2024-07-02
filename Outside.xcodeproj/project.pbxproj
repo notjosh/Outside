@@ -25,6 +25,10 @@
 		4275E629258FAEAF0041705B /* Outside.saver in Resources */ = {isa = PBXBuildFile; fileRef = 4275E5C7258FAA720041705B /* Outside.saver */; };
 		4275E62D258FAFD70041705B /* ConfigurationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4275E62C258FAFD70041705B /* ConfigurationController.swift */; };
 		429B80AC2AD024CC00BC58E7 /* videos.v2.json in Resources */ = {isa = PBXBuildFile; fileRef = 429B80AB2AD024CC00BC58E7 /* videos.v2.json */; };
+		42B4ADA32C34545300AD7D99 /* LenientJSONDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B4ADA22C34544200AD7D99 /* LenientJSONDecoder.swift */; };
+		42B4ADA52C3456FF00AD7D99 /* JSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B4ADA42C3456FA00AD7D99 /* JSONParser.swift */; };
+		42B4ADA72C34574200AD7D99 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B4ADA62C34573F00AD7D99 /* JSONValue.swift */; };
+		42B4ADA92C345BA200AD7D99 /* VimeoConfigExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B4ADA82C345B9800AD7D99 /* VimeoConfigExtractor.swift */; };
 		42C1F1FC25923D8B003EE996 /* thumbnail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 42C1F1FA25923D8A003EE996 /* thumbnail@2x.png */; };
 		42C1F1FD25923D8B003EE996 /* thumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 42C1F1FB25923D8B003EE996 /* thumbnail.png */; };
 		42E5C034258FFF4E0089DD5C /* ScreenSaverInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 42E5C033258FFF4E0089DD5C /* ScreenSaverInterface.h */; };
@@ -63,6 +67,10 @@
 		4275E621258FAEA50041705B /* OutsideRunner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OutsideRunner.entitlements; sourceTree = "<group>"; };
 		4275E62C258FAFD70041705B /* ConfigurationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationController.swift; sourceTree = "<group>"; };
 		429B80AB2AD024CC00BC58E7 /* videos.v2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = videos.v2.json; sourceTree = "<group>"; };
+		42B4ADA22C34544200AD7D99 /* LenientJSONDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LenientJSONDecoder.swift; sourceTree = "<group>"; };
+		42B4ADA42C3456FA00AD7D99 /* JSONParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONParser.swift; sourceTree = "<group>"; };
+		42B4ADA62C34573F00AD7D99 /* JSONValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
+		42B4ADA82C345B9800AD7D99 /* VimeoConfigExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VimeoConfigExtractor.swift; sourceTree = "<group>"; };
 		42C1F1FA25923D8A003EE996 /* thumbnail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail@2x.png"; sourceTree = "<group>"; };
 		42C1F1FB25923D8B003EE996 /* thumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbnail.png; sourceTree = "<group>"; };
 		42E5C031258FFF4E0089DD5C /* Outside-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Outside-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -109,6 +117,7 @@
 		4275E5C9258FAA720041705B /* Outside */ = {
 			isa = PBXGroup;
 			children = (
+				42B4ADA12C34543800AD7D99 /* JSON */,
 				4275E5D6258FAAFC0041705B /* OutsideView.swift */,
 				4225F573259FF61B00F4FC6E /* BlurEffectView.swift */,
 				4275E62C258FAFD70041705B /* ConfigurationController.swift */,
@@ -143,6 +152,17 @@
 				4275E621258FAEA50041705B /* OutsideRunner.entitlements */,
 			);
 			path = OutsideRunner;
+			sourceTree = "<group>";
+		};
+		42B4ADA12C34543800AD7D99 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				42B4ADA42C3456FA00AD7D99 /* JSONParser.swift */,
+				42B4ADA62C34573F00AD7D99 /* JSONValue.swift */,
+				42B4ADA22C34544200AD7D99 /* LenientJSONDecoder.swift */,
+				42B4ADA82C345B9800AD7D99 /* VimeoConfigExtractor.swift */,
+			);
+			path = JSON;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,8 +283,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4275E62D258FAFD70041705B /* ConfigurationController.swift in Sources */,
+				42B4ADA72C34574200AD7D99 /* JSONValue.swift in Sources */,
+				42B4ADA92C345BA200AD7D99 /* VimeoConfigExtractor.swift in Sources */,
 				424857AD25900ECB004681EE /* Bundle+Decodable.swift in Sources */,
+				42B4ADA32C34545300AD7D99 /* LenientJSONDecoder.swift in Sources */,
 				424857B1259010EF004681EE /* PlaylistItem.swift in Sources */,
+				42B4ADA52C3456FF00AD7D99 /* JSONParser.swift in Sources */,
 				424857B92590145F004681EE /* URLSession+Decodable.swift in Sources */,
 				4275E5D7258FAAFC0041705B /* OutsideView.swift in Sources */,
 				4225F574259FF61B00F4FC6E /* BlurEffectView.swift in Sources */,
@@ -434,6 +458,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.notjosh.Outside;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -459,6 +484,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.notjosh.Outside;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
